@@ -167,7 +167,7 @@
         '<div class="chips">' + p.formats.map(function (f) { return "<span>" + f + "</span>"; }).join("") + '</div>' +
         '<ul>' + p.inside.slice(0, 5).map(function (x) { return "<li>" + x + "</li>"; }).join("") + '</ul>' +
         '<p class="price" data-usd="' + p.usd + '" data-php="' + p.php + '">' + (cur === "php" ? p.php : p.usd) + '</p>' +
-        '<div style="display:grid;gap:.6rem"><button type="button" class="btn btn-cobalt btn-block" data-buy="' + p.slug + '">Buy now</button><p class="buy-error" role="alert" hidden></p>' +
+        '<div style="display:grid;gap:.6rem">' + (p.gumroad ? '<a class="btn btn-cobalt btn-block" href="' + p.gumroad + '" target="_blank" rel="noopener">Buy on Gumroad</a><p class="buy-note" style="margin:0">Card or PayPal, charged in USD.</p>' : '<button type="button" class="btn btn-cobalt btn-block" data-buy="' + p.slug + '">Buy now</button><p class="buy-error" role="alert" hidden></p>') +
         '<a class="btn btn-ghost btn-block" href="' + p.slug + '.html">See full details</a></div>';
       mountGallery(dlg.querySelector(".ql-gallery"), p.previews);
       if (dlg.showModal) dlg.showModal(); else location.href = p.slug + ".html";

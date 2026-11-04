@@ -83,10 +83,10 @@ def previews(p):
 
 def card(p, order):
     cat = p["shelf"]
-    badge = '<span class="badge">Best value</span>' if p.get("best") else ""
+    badge = '<span class="badge">Best value</span>' if p.get("best") else ('<span class="badge badge-gr">Card · PayPal</span>' if p.get("gumroad") else "")
     search = " ".join([p["name"], p["card"], SHELVES[cat][0], " ".join(p["formats"]), " ".join(p["inside"])]).lower()
     first = p["previews"][0][0]
-    return f'''      <article class="card" data-cat="{cat}" data-price="{p["php_cents"]}" data-order="{order}" data-search="{esc(search)}">
+    return f'''      <article class="card" data-cat="{cat}" data-price="{p["php_cents"] or int(float(p["usd"].lstrip("$")) * 5800)}" data-order="{order}" data-search="{esc(search)}">
         <div class="card-media">
           {badge}<span class="shots">{len(p["previews"])} previews</span>
           <img src="assets/covers/{p["slug"]}.jpg" alt="{esc(p["name"])} cover" loading="lazy" width="1280" height="720">
@@ -109,7 +109,7 @@ counts = {k: sum(1 for p in PRODUCTS if p["shelf"] == k) for k in SHELVES}
 cats_html = f'<button type="button" class="cat" data-cat="all" aria-pressed="true"><span class="dot"></span>All kits <span class="n">{len(PRODUCTS)}</span></button>' + "".join(
     f'<button type="button" class="cat" data-cat="{k}" aria-pressed="false"><span class="dot"></span>{lab} <span class="n">{counts[k]}</span></button>' for k, (lab, _) in SHELVES.items())
 catalog_json = {p["slug"]: {"slug": p["slug"], "name": p["name"], "sub": p["sub"], "cat": p["shelf"], "catLabel": SHELVES[p["shelf"]][0],
-                            "usd": p["usd"], "php": p["php"], "formats": p["formats"], "inside": p["inside"], "previews": previews(p)} for p in PRODUCTS}
+                            "usd": p["usd"], "php": p["php"], "formats": p["formats"], "inside": p["inside"], "previews": previews(p), "gumroad": p.get("gumroad", "")} for p in PRODUCTS}
 
 home = head("ProfetaKit – Digital Templates & Starter Kits",
             "Ready-made spreadsheets, resume templates and admin dashboards. Preview every page before you buy, pay with GCash, Maya or card, and download instantly.",
@@ -213,6 +213,7 @@ home += f'''<main id="main">
         <details><summary>How do I get my files?</summary><p>Right after payment you're taken to your download page. Save the link: it keeps working for a year.</p></details>
         <details><summary>Which apps do I need?</summary><p>Spreadsheets work in Google Sheets (free) and Microsoft Excel 2016 or newer. Resume templates open in Word or Google Docs. The dashboard template is plain HTML that runs in any browser.</p></details>
         <details><summary>What payment methods can I use?</summary><p>GCash, Maya, GrabPay, QR Ph, and Visa or Mastercard credit and debit cards, including cards issued outside the Philippines.</p></details>
+        <details><summary>Why do some kits say "Buy on Gumroad"?</summary><p>Our freelancer and developer kits are sold through Gumroad, so buyers anywhere can pay by card or PayPal in US dollars. Your download link arrives by email right after payment. Everything else checks out here with GCash, Maya, QR Ph or card.</p></details>
         <details><summary>Why does my statement say Dafreta Networks?</summary><p>ProfetaKit is run by Dafreta Networks, so that's the name your bank or e-wallet shows for the charge.</p></details>
         <details><summary>Can I get a refund?</summary><p>Because files are delivered instantly, sales are final. If a file doesn't open or something is broken, message us and we'll fix it or refund you.</p></details>
       </div>
@@ -233,10 +234,19 @@ for p in PRODUCTS:
     cat = p["shelf"]
     ld = {"@context": "https://schema.org", "@type": "Product", "name": p["name"], "description": p["desc"],
           "image": [SITE + "assets/previews/" + f for f, _ in p["previews"]], "brand": {"@type": "Brand", "name": "ProfetaKit"},
-          "offers": {"@type": "Offer", "priceCurrency": "PHP", "price": str(p["php_cents"] // 100), "availability": "https://schema.org/InStock", "url": SITE + p["slug"] + ".html"}}
+          "offers": ({"@type": "Offer", "priceCurrency": "USD", "price": p["usd"].lstrip("$"), "availability": "https://schema.org/InStock", "url": p["gumroad"]} if p.get("gumroad") else
+                     {"@type": "Offer", "priceCurrency": "PHP", "price": str(p["php_cents"] // 100), "availability": "https://schema.org/InStock", "url": SITE + p["slug"] + ".html"})}
     page = head(p["title"], p["desc"], f"{SITE}{p['slug']}.html", f"assets/covers/{p['slug']}.jpg", ld)
     inside = "".join(f"<li>{CHECK}<span>{x}</span></li>" for x in p["inside"])
     chips = "".join(f"<span>{x}</span>" for x in p["formats"])
+    if p.get("gumroad"):
+        buy_main = f'<a class="btn btn-cobalt btn-block" href="{p["gumroad"]}" target="_blank" rel="noopener">Buy on Gumroad</a>'
+        buy_bar = f'<a class="btn btn-cobalt" href="{p["gumroad"]}" target="_blank" rel="noopener">Buy on Gumroad</a>'
+        buy_note = "Sold through Gumroad: pay by card or PayPal, charged in US dollars. Your download link arrives by email right away."
+    else:
+        buy_main = f'<button type="button" class="btn btn-cobalt btn-block" data-buy="{p["slug"]}">Buy now</button>'
+        buy_bar = f'<button type="button" class="btn btn-cobalt" data-buy="{p["slug"]}">Buy now</button>'
+        buy_note = "Pay with GCash, Maya, GrabPay, QR Ph or card. Your download opens right after payment. Prices are shown in your local currency."
     demo = f'<a class="btn btn-ghost btn-block" href="{p["demo"]}" target="_blank" rel="noopener">Try the live demo</a>' if p.get("demo") else ""
     rel = [q for q in PRODUCTS if q["slug"] != p["slug"] and q["shelf"] == cat][:3]
     rel += [q for q in PRODUCTS if q["slug"] != p["slug"] and q not in rel][: 4 - len(rel)]
@@ -254,10 +264,10 @@ for p in PRODUCTS:
         <div class="chips">{chips}</div>
         <div class="buybox">
           <span class="price" data-usd="{p["usd"]}" data-php="{p["php"]}">{p["usd"]}</span>
-          <button type="button" class="btn btn-cobalt btn-block" data-buy="{p["slug"]}">Buy now</button>
+          {buy_main}
           {demo}
           <p class="buy-error" role="alert" hidden></p>
-          <p class="buy-note">Pay with GCash, Maya, GrabPay, QR Ph or card. Your download opens right after payment. Prices are shown in your local currency.</p>
+          <p class="buy-note">{buy_note}</p>
         </div>
         <div class="pp-section"><h2>What's inside</h2><ul>{inside}</ul></div>
         <div class="pp-section"><h2>Made for</h2><p>{esc(p["who"])}</p></div>
@@ -266,7 +276,7 @@ for p in PRODUCTS:
   </section>
   <div class="buybar" data-buybar>
     <div><span class="buybar-name">{esc(p["name"])}</span><span class="price" data-usd="{p["usd"]}" data-php="{p["php"]}">{p["usd"]}</span></div>
-    <button type="button" class="btn btn-cobalt" data-buy="{p["slug"]}">Buy now</button>
+    {buy_bar}
   </div>
   <section class="related" aria-labelledby="rel-title">
     <div class="wrap">
@@ -308,7 +318,7 @@ urls = [SITE] + [f"{SITE}{p['slug']}.html" for p in PRODUCTS] + [f"{SITE}demo/ki
 wpath = root / "worker" / "profetakit-worker.js"
 w = wpath.read_text()
 block = "const PRODUCTS = {\n" + "".join(
-    f"  '{p['slug']}': {{\n    name: {json.dumps(p['name'])}, price: {p['php_cents']},\n    files: {json.dumps(p['files'])},\n  }},\n" for p in PRODUCTS) + "};"
+    f"  '{p['slug']}': {{\n    name: {json.dumps(p['name'])}, price: {p['php_cents']},\n    files: {json.dumps(p['files'])},\n  }},\n" for p in PRODUCTS if not p.get("gumroad")) + "};"
 w = re.sub(r"const PRODUCTS = \{.*?\n\};", block, w, flags=re.S)
 wpath.write_text(w)
 print("built", len(PRODUCTS), "products")

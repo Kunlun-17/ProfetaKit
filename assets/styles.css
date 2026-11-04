@@ -95,6 +95,7 @@ button { font: inherit; }
 .card:hover .card-media img { transform: scale(1.04); }
 .quick { box-shadow: 0 6px 18px -6px rgba(22,24,31,.45); border-color: var(--ink) !important; position: absolute; left: 50%; bottom: 1rem; transform: translate(-50%, 8px); opacity: 0; transition: all .2s ease; z-index: 2; }
 .card:hover .quick, .card:focus-within .quick { opacity: 1; transform: translate(-50%, 0); }
+.badge.badge-gr { background: #FF90E8; }
 .badge { position: absolute; top: .8rem; right: .8rem; z-index: 2; background: var(--gold); color: var(--ink); font: 700 .78rem var(--display); padding: .28rem .65rem; border-radius: 999px; }
 .shots { position: absolute; top: .8rem; left: .8rem; z-index: 2; background: rgba(22, 24, 31, .78); color: #fff; font-size: .75rem; font-weight: 600; padding: .22rem .6rem; border-radius: 999px; }
 .card-body { display: flex; flex-direction: column; gap: .4rem; padding: 1rem 1.1rem 1.1rem; flex: 1; }
