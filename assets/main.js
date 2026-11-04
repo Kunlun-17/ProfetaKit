@@ -31,6 +31,29 @@
   }
   if (currencyButtons.length) setCurrency(saved);
 
+  /* ---------- Checkout (ProfetaKit Cloudflare Worker) ---------- */
+  // Set this to your Worker's address after you deploy it, e.g. "https://profetakit.yourname.workers.dev"
+  var STORE_API = "https://profetakit-store.workers.dev";
+  window.PK_STORE_API = STORE_API;
+  document.querySelectorAll("[data-buy]").forEach(function (btn) {
+    var err = btn.parentElement.querySelector(".buy-error");
+    btn.addEventListener("click", function () {
+      var label = btn.textContent;
+      btn.disabled = true; btn.textContent = "Opening checkout…";
+      if (err) err.hidden = true;
+      fetch(STORE_API + "/checkout", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ product: btn.getAttribute("data-buy") })
+      }).then(function (r) { return r.json(); }).then(function (j) {
+        if (j.url) { window.location.href = j.url; return; }
+        throw new Error(j.error || "Checkout could not start.");
+      }).catch(function (e) {
+        btn.disabled = false; btn.textContent = label;
+        if (err) { err.textContent = (e && e.message ? e.message : "Checkout could not start.") + " Try again in a moment."; err.hidden = false; }
+      });
+    });
+  });
+
   /* ---------- Particle kit stage ---------- */
   var canvas = document.getElementById("kit-canvas");
   if (!canvas) return;

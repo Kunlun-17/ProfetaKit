@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your downloads – ProfetaKit</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<header class="nav">
+  <a class="brand" href="./" aria-label="ProfetaKit home">
+    <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true"><rect x="4" y="12" width="32" height="24" rx="5" fill="#15172E"/><rect x="4" y="12" width="32" height="8" rx="4" fill="#FFC93C"/><path d="M14 12V8a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v4" fill="none" stroke="#15172E" stroke-width="3"/><rect x="17" y="17" width="6" height="6" rx="1.5" fill="#15172E"/></svg>
+    <span>ProfetaKit</span>
+  </a>
+</header>
+<main id="main" class="thanks">
+  <h1 id="t-title">Checking your payment…</h1>
+  <p class="lede" id="t-msg">This usually takes a few seconds.</p>
+  <ul class="dl-list" id="t-files"></ul>
+  <p class="pp-small" id="t-note" hidden>Bookmark this page. Your download link keeps working for a year.</p>
+</main>
+<script src="assets/main.js"></script>
+<script>
+(function () {
+  var id = new URLSearchParams(location.search).get("order");
+  var title = document.getElementById("t-title"), msg = document.getElementById("t-msg");
+  var list = document.getElementById("t-files"), note = document.getElementById("t-note");
+  var api = window.PK_STORE_API, tries = 0;
+  if (!id) { title.textContent = "No order found"; msg.textContent = "Open the link from your receipt email, or message us with your receipt."; return; }
+  function check() {
+    fetch(api + "/order?id=" + encodeURIComponent(id)).then(function (r) { return r.json(); }).then(function (j) {
+      if (j.error) throw new Error(j.error);
+      if (j.status === "paid") {
+        title.textContent = "Your " + j.product + " is ready";
+        msg.textContent = "Download your files below.";
+        list.innerHTML = "";
+        j.files.forEach(function (f) {
+          var li = document.createElement("li"), a = document.createElement("a");
+          a.className = "btn"; a.textContent = "Download " + f.name;
+          a.href = api + "/download?id=" + encodeURIComponent(id) + "&file=" + f.n;
+          li.appendChild(a); list.appendChild(li);
+        });
+        note.hidden = false;
+      } else if (++tries < 20) {
+        setTimeout(check, 3000);
+      } else {
+        title.textContent = "Payment still processing";
+        msg.textContent = "Some payments take a few minutes. Refresh this page soon. If it doesn't update, message us with your receipt.";
+      }
+    }).catch(function (e) { title.textContent = "Something went wrong"; msg.textContent = e.message; });
+  }
+  check();
+})();
+</script>
+</body>
+</html>

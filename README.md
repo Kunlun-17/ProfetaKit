@@ -7,13 +7,15 @@ Digital templates and starter kits. Ready-made digital solutions. Download, use,
 2. In the repo, open **Settings → Pages**, set **Source** to "Deploy from a branch", then pick `main` and `/ (root)`.
 3. The site appears at `https://kunlun-17.github.io/ProfetaKit/` within a few minutes.
 
-## Connect PayMongo
-Each product page has a **Buy now** button with two placeholders, for example:
-`PAYMONGO_LINK_DEBT_PAYOFF_TRACKER_USD` and `PAYMONGO_LINK_DEBT_PAYOFF_TRACKER_PHP`.
-
-Replace each one with the matching PayMongo payment link (it must start with `https://`) in
-`tools/build_products.py`, then run `python3 tools/build_products.py` to rebuild the pages.
-Until then, the buttons stay inactive.
+## Payments and downloads (Cloudflare Worker)
+`worker/profetakit-worker.js` runs checkout and delivery:
+1. In Cloudflare, create a new Worker (for example `profetakit-store`) and paste the file in.
+2. Create a KV namespace and bind it as `ORDERS`. Create a private R2 bucket and bind it as `FILES`.
+3. Add secrets `PAYMONGO_SECRET_KEY` and `PAYMONGO_WEBHOOK_SECRET`, and text variables
+   `SITE_URL` (`https://kunlun-17.github.io/ProfetaKit`) and `PAYMENT_METHODS`.
+4. In PayMongo, add a webhook to `https://<your-worker>/webhook` for `checkout_session.payment.paid`.
+5. Upload the product files to R2 using the keys listed in `PRODUCTS` in the Worker.
+6. Put the Worker address in `STORE_API` at the top of the checkout section in `assets/main.js`.
 
 ## Never put paid files in this repo
 This repo is public. Product files are delivered through a separate download page or service.
