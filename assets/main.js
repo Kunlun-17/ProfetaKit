@@ -33,7 +33,7 @@
 
   /* ---------- Checkout (ProfetaKit Cloudflare Worker) ---------- */
   // Set this to your Worker's address after you deploy it, e.g. "https://profetakit.yourname.workers.dev"
-  var STORE_API = "https://profetakit-store.workers.dev";
+  var STORE_API = "https://profetakit-store.kunlun-dafreta-1.workers.dev";
   window.PK_STORE_API = STORE_API;
   document.querySelectorAll("[data-buy]").forEach(function (btn) {
     var err = btn.parentElement.querySelector(".buy-error");
