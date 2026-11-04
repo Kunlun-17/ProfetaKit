@@ -109,7 +109,7 @@
       if (t) return show(Number(t.getAttribute("data-k")));
       if (e.target.closest(".prev")) return show(i - 1);
       if (e.target.closest(".next")) return show(i + 1);
-      if (e.target.closest(".gallery-main")) lbOpen(items, i);
+      var gm = e.target.closest(".gallery-main"); if (gm && !gm._swiped) lbOpen(items, i);
     });
     if (items.length < 2) root.querySelectorAll(".gallery-nav").forEach(function (b) { b.hidden = true; });
     show(0);
@@ -174,6 +174,75 @@
     });
     dlg.addEventListener("click", function (e) { if (e.target === dlg || e.target.closest(".ql-close")) dlg.close(); });
   }
+
+  /* ---------- 3D hero scene ---------- */
+  var rig = document.querySelector(".rig");
+  if (rig && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    var target = { x: 14, y: -22 }, cur3 = { x: 14, y: -22 }, hovering = false, t0h = performance.now();
+    var hero = document.querySelector(".hero");
+    hero.addEventListener("pointermove", function (e) {
+      var r = hero.getBoundingClientRect();
+      var px = (e.clientX - r.left) / r.width - 0.5, py = (e.clientY - r.top) / r.height - 0.5;
+      target.y = -22 + px * 26; target.x = 14 - py * 18; hovering = true;
+    });
+    hero.addEventListener("pointerleave", function () { hovering = false; });
+    var heroVisible = true;
+    if ("IntersectionObserver" in window) new IntersectionObserver(function (en) { heroVisible = en[0].isIntersecting; }).observe(hero);
+    (function tick(now) {
+      if (heroVisible) {
+        if (!hovering) { var t = (now - t0h) / 1000; target.y = -22 + Math.sin(t * 0.5) * 9; target.x = 14 + Math.cos(t * 0.4) * 4; }
+        cur3.x += (target.x - cur3.x) * 0.06; cur3.y += (target.y - cur3.y) * 0.06;
+        rig.style.setProperty("--rx", cur3.x.toFixed(2) + "deg"); rig.style.setProperty("--ry", cur3.y.toFixed(2) + "deg");
+      }
+      requestAnimationFrame(tick);
+    })(performance.now());
+  }
+
+  /* ---------- Hero search, quick tags, search shortcuts ---------- */
+  function searchStore(q) {
+    var input = document.querySelector("[data-store-search]");
+    if (!input) { location.href = "./#store"; return; }
+    var all = document.querySelector('.cat[data-cat="all"]'); if (all) all.click();
+    input.value = q; input.dispatchEvent(new Event("input"));
+    document.getElementById("store").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  var hs = document.querySelector("[data-hero-search]");
+  if (hs) hs.addEventListener("submit", function (e) { e.preventDefault(); searchStore(hs.querySelector("input").value.trim().toLowerCase()); });
+  document.querySelectorAll("[data-tag]").forEach(function (b) {
+    b.addEventListener("click", function () { var i = hs && hs.querySelector("input"); if (i) i.value = b.textContent; searchStore(b.getAttribute("data-tag")); });
+  });
+  document.querySelectorAll("[data-focus-search]").forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      var input = document.querySelector("[data-store-search]");
+      if (!input) return;
+      e.preventDefault();
+      document.getElementById("store").scrollIntoView({ behavior: "smooth", block: "start" });
+      setTimeout(function () { input.focus({ preventScroll: true }); }, 450);
+    });
+  });
+  /* tab bar: mark the current tab */
+  (function () {
+    var tabs = document.querySelectorAll(".tabbar a"); if (!tabs.length) return;
+    var onHome = !!document.querySelector(".hero");
+    function mark() {
+      var key = !onHome ? "shop" : (location.hash === "#faq" ? "help" : (window.scrollY > (document.getElementById("store") || { offsetTop: 9e9 }).offsetTop - 200 ? "shop" : "home"));
+      tabs.forEach(function (t) { if (t.getAttribute("data-tab") === key) t.setAttribute("aria-current", "page"); else t.removeAttribute("aria-current"); });
+    }
+    window.addEventListener("scroll", mark, { passive: true }); window.addEventListener("hashchange", mark); mark();
+  })();
+
+  /* swipe between gallery images on touch screens */
+  document.addEventListener("touchstart", function (e) {
+    var g = e.target.closest(".gallery-main, .lightbox"); if (!g) return;
+    g._sx = e.touches[0].clientX; g._sy = e.touches[0].clientY;
+  }, { passive: true });
+  document.addEventListener("touchend", function (e) {
+    var g = e.target.closest(".gallery-main, .lightbox"); if (!g || g._sx == null) return;
+    var dx = e.changedTouches[0].clientX - g._sx, dy = e.changedTouches[0].clientY - g._sy; g._sx = null;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+      var btn = g.querySelector(dx < 0 ? ".next" : ".prev"); if (btn) { g._swiped = true; btn.click(); setTimeout(function () { g._swiped = false; }, 50); }
+    }
+  }, { passive: true });
 
   /* ---------- Particle kit stage ---------- */
   var canvas = document.getElementById("kit-canvas");

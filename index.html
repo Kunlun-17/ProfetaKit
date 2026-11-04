@@ -32,32 +32,46 @@
       <li><a href="./#store" data-jump="code">Code</a></li>
       <li><a href="./#faq">FAQ</a></li>
     </ul></nav>
-    <a class="btn btn-small" href="./#store">Browse kits</a>
+    <a class="btn btn-small top-cta" href="./#store">Browse kits</a>
+    <a class="top-search" href="./#store" data-focus-search aria-label="Search kits"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></a>
   </div>
 </header>
 <main id="main">
   <section class="hero">
     <div class="wrap">
-      <div>
-        <h1>Ready-made digital solutions.<em>Download, use, done.</em></h1>
-        <p class="lede">Spreadsheets that do the maths, resumes that get read and dashboards you can ship today. See every page before you buy.</p>
-        <div class="hero-actions">
-          <a class="btn btn-cobalt" href="#store">Shop all 7 kits</a>
-          <a class="btn btn-ghost" href="#how">How it works</a>
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="pulse"></span>Your one-stop kit shop · new kits every two weeks</p>
+        <h1>Digital kits that do the work for you.</h1>
+        <p class="lede">Spreadsheets, resume templates and admin dashboards for online sellers, planners, job seekers and developers. Preview every page, pay with GCash, Maya or card, and download in seconds.</p>
+        <form class="hero-search" role="search" action="./#store" data-hero-search>
+          <label class="sr-only" for="hero-q">What do you need?</label>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input id="hero-q" type="search" placeholder="What do you need? Try budget, wedding, resume…" autocomplete="off">
+          <button class="btn btn-cobalt" type="submit">Find kits</button>
+        </form>
+        <div class="quick-tags" aria-label="Popular searches">
+          <button type="button" data-tag="seller">Online seller</button>
+          <button type="button" data-tag="budget">Budget</button>
+          <button type="button" data-tag="debt">Debt payoff</button>
+          <button type="button" data-tag="wedding">Wedding</button>
+          <button type="button" data-tag="resume">Resume</button>
+          <button type="button" data-tag="dashboard">Dashboard</button>
         </div>
         <ul class="facts">
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Instant download</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>GCash, Maya or card</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Real previews of every file</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>GCash · Maya · QR Ph · Card</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>32 real previews</li>
         </ul>
       </div>
-      <div class="stage">
-        <canvas id="kit-canvas" aria-hidden="true"></canvas>
-        <p class="stage-label"><b>Inside the kits</b></p>
-        <div class="stage-tabs" role="tablist" aria-label="Preview a kit">
-          <button role="tab" aria-selected="true" data-shape="0">Budget tracker</button>
-          <button role="tab" aria-selected="false" data-shape="1">Dashboard</button>
-          <button role="tab" aria-selected="false" data-shape="2">Dev template</button>
+      <div class="scene" aria-hidden="true">
+        <div class="rig">
+          <figure class="slab s-back"><img src="assets/previews/kitboard-1.jpg" alt=""></figure>
+          <figure class="slab s-mid"><img src="assets/previews/seller-1.jpg" alt=""></figure>
+          <figure class="slab s-front"><img src="assets/previews/wedding-1.jpg" alt=""></figure>
+          <figure class="slab s-phone"><img src="assets/previews/kitboard-6.jpg" alt=""></figure>
+          <span class="float-chip c1"><b>₱</b> GCash · Maya · Card</span>
+          <span class="float-chip c2"><b>.xlsx</b> Ready to use</span>
+          <span class="float-chip c3"><b>↓</b> Instant download</span>
         </div>
       </div>
     </div>
@@ -68,7 +82,7 @@
       <div class="store-head">
         <div>
           <h2 id="store-title">Shop the kits</h2>
-          <p>Pick a category, or search for what you need. Click Quick look to flip through the real pages.</p>
+          <p>Every kit shows real screenshots of each page. Tap Quick look to flip through them before you buy.</p>
         </div>
       </div>
       <div class="toolbar">
@@ -249,6 +263,12 @@
     <p class="legal">ProfetaKit is a Dafreta Networks company. Charges appear as Dafreta Networks.<br>© <span id="year">2026</span> ProfetaKit. All rights reserved.</p>
   </div>
 </footer>
+<nav class="tabbar" aria-label="Quick navigation">
+  <a href="./" data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Home</a>
+  <a href="./#store" data-tab="shop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 8h14l-1 12H6z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg>Shop</a>
+  <a href="./#store" data-focus-search data-tab="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>Search</a>
+  <a href="./#faq" data-tab="help"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14M12 17h.01"/></svg>Help</a>
+</nav>
 <script src="assets/main.js"></script>
 <script>(function(){var onStore=!!document.querySelector(".cat");document.querySelectorAll("[data-jump]").forEach(function(a){var c=a.getAttribute("data-jump");if(!onStore){a.href="./#store?cat="+c;return;}a.addEventListener("click",function(){var b=document.querySelector('.cat[data-cat="'+c+'"]');if(b)b.click();});});})();</script>
 </body>
