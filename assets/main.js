@@ -48,7 +48,8 @@
         body: JSON.stringify({ product: btn.getAttribute("data-buy") })
       }).then(function (r) { return r.json(); }).then(function (j) {
         if (j.url) { window.location.href = j.url; return; }
-        throw new Error(j.error || "Checkout could not start.");
+        if (j.detail) console.error("ProfetaKit checkout:", j.detail);
+        throw new Error((j.error || "Checkout could not start.") + (j.detail ? " (" + j.detail + ")" : ""));
       }).catch(function (e) {
         btn.disabled = false; btn.textContent = label;
         if (err) { err.textContent = (e && e.message ? e.message : "Checkout could not start.") + " Try again in a moment."; err.hidden = false; }

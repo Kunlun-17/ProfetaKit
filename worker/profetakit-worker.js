@@ -64,7 +64,11 @@ const pm = (env, path, body) => fetch('https://api.paymongo.com/v1/' + path, {
   method: 'POST',
   headers: { 'Content-Type': 'application/json', Authorization: 'Basic ' + btoa(env.PAYMONGO_SECRET_KEY + ':') },
   body: JSON.stringify(body),
-}).then(async r => { const j = await r.json(); if (!r.ok) throw new Error(JSON.stringify(j.errors || j)); return j; });
+}).then(async r => {
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error('PayMongo: ' + ((j.errors || []).map(e => e.detail || e.code).join('; ') || ('HTTP ' + r.status)));
+  return j;
+});
 
 /* Order IDs are long and random, so nobody can guess someone else's download link. */
 const newOrderId = () => 'PK-' + [...crypto.getRandomValues(new Uint8Array(12))].map(b => b.toString(16).padStart(2, '0')).join('');
@@ -76,6 +80,8 @@ async function checkout(req, env) {
   const { product } = await req.json().catch(() => ({}));
   const P = PRODUCTS[product];
   if (!P) throw new UserError('That product does not exist.');
+  if (!env.ORDERS || !env.ORDERS.put) throw new Error('Setup: the ORDERS KV namespace is not bound to this Worker.');
+  if (!env.PAYMONGO_SECRET_KEY) throw new Error('Setup: the PAYMONGO_SECRET_KEY secret is missing.');
   const id = newOrderId();
   const s = await pm(env, 'checkout_sessions', { data: { attributes: {
     line_items: [{ name: P.name, amount: P.price, currency: 'PHP', quantity: 1 }],
@@ -152,6 +158,16 @@ export default {
       if (req.method === 'POST' && url.pathname === '/webhook') return await webhook(req, env);
       if (req.method === 'GET' && url.pathname === '/order') return await orderStatus(url, env);
       if (req.method === 'GET' && url.pathname === '/download') return await download(url, env);
+      if (req.method === 'GET' && url.pathname === '/health') return json(env, {
+        version: '2026-11-04b',
+        products: Object.keys(PRODUCTS).length,
+        ORDERS_binding: !!(env.ORDERS && env.ORDERS.put),
+        FILES_binding: !!(env.FILES && env.FILES.get),
+        PAYMONGO_SECRET_KEY: env.PAYMONGO_SECRET_KEY ? (String(env.PAYMONGO_SECRET_KEY).startsWith('sk_live') ? 'set (live)' : String(env.PAYMONGO_SECRET_KEY).startsWith('sk_test') ? 'set (test)' : 'set, but it should start with sk_live or sk_test') : 'missing',
+        PAYMONGO_WEBHOOK_SECRET: env.PAYMONGO_WEBHOOK_SECRET ? 'set' : 'missing',
+        SITE_URL: env.SITE_URL || 'missing (using default)',
+        PAYMENT_METHODS: env.PAYMENT_METHODS || 'missing (using qrph,gcash,paymaya,card)',
+      });
       if (req.method === 'GET' && url.pathname === '/geo')
         return json(env, { country: (req.cf && req.cf.country) || '' });
       return new Response('ProfetaKit store OK');
