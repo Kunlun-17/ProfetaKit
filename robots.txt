@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://kunlun-17.github.io/ProfetaKit/sitemap.xml
