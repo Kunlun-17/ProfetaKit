@@ -50,10 +50,6 @@ for p in products:
       <div class="pp-buy">
         <div class="pp-buy-row">
           <p class="price" data-usd="{p['usd']}" data-php="{p['php']}">{p['usd']}</p>
-          <div class="currency" role="group" aria-label="Show prices in">
-            <button type="button" data-currency="usd" aria-pressed="true">USD</button>
-            <button type="button" data-currency="php" aria-pressed="false">PHP</button>
-          </div>
         </div>
         <button type="button" class="btn btn-yellow btn-block" data-buy="{p['slug']}">Buy now</button>
         <p class="buy-error" role="alert" hidden></p>

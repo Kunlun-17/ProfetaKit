@@ -4,32 +4,20 @@
   var yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  /* ---------- Currency toggle ---------- */
-  var currencyButtons = document.querySelectorAll("[data-currency]");
-  function setCurrency(cur) {
-    document.querySelectorAll(".price[data-usd]").forEach(function (el) {
-      el.textContent = el.getAttribute("data-" + cur);
-    });
-    document.querySelectorAll("[data-paylink-usd]").forEach(function (el) {
-      var link = el.getAttribute("data-paylink-" + cur);
-      if (link && link.indexOf("https://") === 0) el.setAttribute("href", link);
-    });
-    currencyButtons.forEach(function (b) {
-      b.setAttribute("aria-pressed", b.getAttribute("data-currency") === cur ? "true" : "false");
-    });
-    try { localStorage.setItem("pk-currency", cur); } catch (e) {}
-  }
-  currencyButtons.forEach(function (b) {
-    b.addEventListener("click", function () { setCurrency(b.getAttribute("data-currency")); });
-  });
-  var saved = null;
-  try { saved = localStorage.getItem("pk-currency"); } catch (e) {}
-  if (!saved) {
-    var tz = "";
+  /* ---------- Local pricing ----------
+     Visitors in the Philippines see pesos; everyone else sees US dollars.
+     Detected from the visitor's time zone and language, no permission needed. */
+  function inPhilippines() {
+    var tz = "", langs = [];
     try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch (e) {}
-    saved = tz === "Asia/Manila" ? "php" : "usd";
+    langs = (navigator.languages || [navigator.language || ""]).join(",").toLowerCase();
+    return tz === "Asia/Manila" || /(^|,)(fil|tl)(-|,|$)|-ph(,|$)/.test(langs);
   }
-  if (currencyButtons.length) setCurrency(saved);
+  var currency = inPhilippines() ? "php" : "usd";
+  document.documentElement.setAttribute("data-currency", currency);
+  document.querySelectorAll(".price[data-usd]").forEach(function (el) {
+    el.textContent = el.getAttribute("data-" + currency);
+  });
 
   /* ---------- Checkout (ProfetaKit Cloudflare Worker) ---------- */
   // Set this to your Worker's address after you deploy it, e.g. "https://profetakit.yourname.workers.dev"
