@@ -295,7 +295,7 @@ dialog.ql::backdrop { background: rgba(22, 24, 31, .55); backdrop-filter: blur(4
   .brand svg { width: 28px; height: 28px; }
   .top-cta { display: none; }
   .top-search { display: grid; margin-left: auto; }
-  .tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; display: grid; grid-template-columns: repeat(4, 1fr); background: rgba(255, 255, 255, .96); backdrop-filter: blur(14px); border-top: 1px solid var(--line); padding: .35rem .5rem calc(.35rem + env(safe-area-inset-bottom)); }
+  .tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; display: grid; grid-template-columns: repeat(5, 1fr); background: rgba(255, 255, 255, .96); backdrop-filter: blur(14px); border-top: 1px solid var(--line); padding: .35rem .5rem calc(.35rem + env(safe-area-inset-bottom)); }
   .tabbar a { display: grid; justify-items: center; gap: .15rem; padding: .35rem 0; font-size: .72rem; font-weight: 600; color: var(--soft); text-decoration: none; border-radius: 12px; }
   .tabbar a svg { width: 22px; height: 22px; }
   .tabbar a[aria-current="page"] { color: var(--cobalt); }
@@ -378,3 +378,9 @@ dialog.ql::backdrop { background: rgba(22, 24, 31, .55); backdrop-filter: blur(4
   .thumbs { grid-template-columns: repeat(auto-fill, minmax(62px, 1fr)); }
 }
 @media (prefers-reduced-motion: reduce) { .slab, .float-chip, .pulse { animation: none !important; } }
+
+/* Free kits page */
+@media (max-width: 640px) {
+  .free-actions .btn { font-size: .78rem; padding: .5rem .4rem; min-height: 0; line-height: 1.2; border-radius: 10px; }
+  .free-actions .btn-ghost { display: none; }
+}

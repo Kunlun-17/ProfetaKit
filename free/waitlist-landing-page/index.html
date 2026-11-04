@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Northstar – launching soon</title><meta name="description" content="Join the waitlist.">
+<link rel="stylesheet" href="kitline-lite.css">
+<style>
+body{min-height:100vh;display:grid;place-items:center;background:radial-gradient(1200px 600px at 80% -10%,var(--kl-primary-soft),transparent),var(--kl-bg)}
+.wrap{width:min(640px,92vw);text-align:center;display:grid;gap:1.3rem;padding:4rem 0}
+.logo{display:inline-flex;align-items:center;gap:.55rem;font-weight:800;justify-self:center}.logo i{width:1.4rem;height:1.4rem;border-radius:7px;background:var(--kl-primary)}
+h1{font-size:clamp(2.2rem,6vw,3.6rem);line-height:1.05;letter-spacing:-.03em;margin:0}
+form{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap}form .kl-input{max-width:300px}
+.points{display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap;color:var(--kl-muted);font-size:.92rem;margin:0;padding:0;list-style:none}
+.points li::before{content:"✓ ";color:var(--kl-success);font-weight:700}
+.foot{color:var(--kl-muted);font-size:.8rem}
+</style></head>
+<body class="kl"><main class="wrap">
+<span class="logo"><i></i>Northstar</span>
+<span class="kl-badge kl-badge-primary kl-badge-dot" style="justify-self:center">Launching in spring</span>
+<h1>Plan your week in five minutes, not fifty.</h1>
+<p class="kl-lead" style="margin:0">Northstar turns your calendar, tasks and goals into one calm weekly plan. Join the waitlist and get early access plus 3 months free.</p>
+<form onsubmit="event.preventDefault();this.innerHTML='<div class=&quot;kl-alert kl-alert-success&quot;>You\'re on the list. We\'ll email you before launch.</div>'">
+<input class="kl-input" type="email" required placeholder="you@example.com" aria-label="Email address"><button class="kl-btn kl-btn-lg">Join the waitlist</button></form>
+<ul class="points"><li>Early access</li><li>3 months free</li><li>No spam, ever</li></ul>
+<p class="foot">Replace "Northstar" and the text above with your own product. Connect the form to Formspree, Netlify Forms or your email tool.</p>
+</main></body></html>

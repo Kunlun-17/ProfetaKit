@@ -49,6 +49,7 @@ def head(title, desc, canonical, og_image=None, ld=None, noindex=False):
       <li><a href="./#store" data-jump="money">Money</a></li>
       <li><a href="./#store" data-jump="life">Work &amp; Life</a></li>
       <li><a href="./#store" data-jump="code">Code</a></li>
+      <li><a href="free-kits.html">Free</a></li>
       <li><a href="./#faq">FAQ</a></li>
     </ul></nav>
     <a class="btn btn-small top-cta" href="./#store">Browse kits</a>
@@ -68,6 +69,7 @@ FOOT = """<footer class="foot">
   <a href="./" data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Home</a>
   <a href="./#store" data-tab="shop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 8h14l-1 12H6z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg>Shop</a>
   <a href="./#store" data-focus-search data-tab="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>Search</a>
+  <a href="free-kits.html" data-tab="free"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="8" width="18" height="13" rx="1.5"/><path d="M12 8v13M3 12h18M12 8c-1.5-3-5-3.5-5-1.2C7 8 9.5 8 12 8zm0 0c1.5-3 5-3.5 5-1.2C17 8 14.5 8 12 8z"/></svg>Free</a>
   <a href="./#faq" data-tab="help"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14M12 17h.01"/></svg>Help</a>
 </nav>
 <script src="assets/main.js"></script>
@@ -309,8 +311,51 @@ for old in root.glob("*.html"):
     if old.stem not in keep:
         old.unlink()
 
+
+# ---------------- free kits page ----------------
+GH = "https://github.com/Kunlun-17/ProfetaKit/tree/main/free/"
+FREE = [("kitline-lite", "Kitline Lite", "Free HTML & CSS buttons, badges, alerts, cards and form inputs. MIT licence, no framework.", "kitline-ui", "code", ["HTML", "CSS"]),
+        ("waitlist-landing-page", "Waitlist Landing Page", "A clean coming-soon page with an email signup. One HTML file, works on phones.", "landing-page-pack", "code", ["HTML", "CSS"]),
+        ("simple-invoice-template", "Simple Invoice Template", "A printable invoice for Excel and Google Sheets. Amounts, tax and total work themselves out.", "freelancer-business-kit", "money", ["Excel", "Google Sheets"]),
+        ("seller-ai-prompts-sampler", "10 AI Prompts for Online Sellers", "The Store Brief plus 10 fill-in prompts for listings, pricing, chat replies and ads.", "seller-ai-prompt-system", "money", ["Markdown", "CSV"]),
+        ("freelancer-cold-email-templates", "8 Cold Email Templates", "Cold emails and follow-ups for freelancers that sound like a person wrote them.", "client-outreach-pack", "life", ["Markdown"])]
+by_slug = {q["slug"]: q for q in PRODUCTS}
+fcards = ""
+for fs, ft, fd, paid, fcat, ffmt in FREE:
+    q = by_slug[paid]
+    fcards += f"""      <article class="card" data-cat="{fcat}">
+        <div class="card-media"><span class="badge">Free</span><img src="assets/covers/free-{fs}.jpg" alt="{esc(ft)} cover" loading="lazy" width="1280" height="720"></div>
+        <div class="card-body">
+          <p class="card-cat">{SHELVES[fcat][0]}</p>
+          <h3>{esc(ft)}</h3>
+          <p class="card-desc">{esc(fd)}</p>
+          <div class="free-actions" style="display:grid;gap:.5rem;margin-top:auto">
+            <a class="btn btn-cobalt btn-block" href="free/{fs}.zip" download>Download free</a>
+            <a class="btn btn-ghost btn-block" href="{GH}{fs}" target="_blank" rel="noopener">View on GitHub</a>
+            <p class="formats" style="margin:.2rem 0 0">{" · ".join(ffmt)} · Full version: <a href="{paid}.html">{esc(q["name"])}</a> ({q["usd"]})</p>
+          </div>
+        </div>
+      </article>
+"""
+freepage = head("Free Templates – Invoice, Landing Page, CSS Components, AI Prompts & Email Templates | ProfetaKit",
+                "Free downloads from ProfetaKit: a simple invoice spreadsheet, a waitlist landing page, a free CSS component kit, 10 AI prompts for online sellers and 8 cold email templates.",
+                SITE + "free-kits.html", "assets/covers/free-kitline-lite.jpg")
+freepage += f"""<main id="main">
+  <section class="store" style="padding-top:2.5rem">
+    <div class="wrap">
+      <p class="crumbs"><a href="./">Home</a> / Free kits</p>
+      <h1 style="font-size:clamp(2rem,5vw,3rem);margin:.4rem 0 .5rem">Free kits. No sign-up.</h1>
+      <p class="lede" style="max-width:40rem;color:var(--soft)">Small, genuinely useful versions of our paid kits. Download the zip or grab the files from GitHub. If you like them, the full versions do a lot more.</p>
+      <div class="grid" style="margin-top:1.6rem">
+{fcards}      </div>
+    </div>
+  </section>
+</main>
+""" + FOOT
+(root / "free-kits.html").write_text(freepage)
+
 # ---------------- sitemap ----------------
-urls = [SITE] + [f"{SITE}{p['slug']}.html" for p in PRODUCTS] + [f"{SITE}demo/kitboard/index.html"]
+urls = [SITE, SITE + "free-kits.html"] + [f"{SITE}{p['slug']}.html" for p in PRODUCTS] + [f"{SITE}demo/kitboard/index.html"]
 (root / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
     "".join(f"  <url><loc>{u}</loc></url>\n" for u in urls) + "</urlset>\n")
 

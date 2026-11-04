@@ -225,7 +225,7 @@
     var tabs = document.querySelectorAll(".tabbar a"); if (!tabs.length) return;
     var onHome = !!document.querySelector(".hero");
     function mark() {
-      var key = !onHome ? "shop" : (location.hash === "#faq" ? "help" : (window.scrollY > (document.getElementById("store") || { offsetTop: 9e9 }).offsetTop - 200 ? "shop" : "home"));
+      var key = /free-kits/.test(location.pathname) ? "free" : !onHome ? "shop" : (location.hash === "#faq" ? "help" : (window.scrollY > (document.getElementById("store") || { offsetTop: 9e9 }).offsetTop - 200 ? "shop" : "home"));
       tabs.forEach(function (t) { if (t.getAttribute("data-tab") === key) t.setAttribute("aria-current", "page"); else t.removeAttribute("aria-current"); });
     }
     window.addEventListener("scroll", mark, { passive: true }); window.addEventListener("hashchange", mark); mark();
