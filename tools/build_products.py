@@ -89,7 +89,7 @@ def card(p, order):
     return f'''      <article class="card" data-cat="{cat}" data-price="{p["php_cents"]}" data-order="{order}" data-search="{esc(search)}">
         <div class="card-media">
           {badge}<span class="shots">{len(p["previews"])} previews</span>
-          <img src="assets/previews/{first}" alt="Preview of {esc(p["name"])}" loading="lazy" width="640" height="480">
+          <img src="assets/covers/{p["slug"]}.jpg" alt="{esc(p["name"])} cover" loading="lazy" width="1280" height="720">
           <button type="button" class="btn btn-light btn-small quick" data-quick="{p["slug"]}">Quick look</button>
         </div>
         <div class="card-body">
@@ -234,7 +234,7 @@ for p in PRODUCTS:
     ld = {"@context": "https://schema.org", "@type": "Product", "name": p["name"], "description": p["desc"],
           "image": [SITE + "assets/previews/" + f for f, _ in p["previews"]], "brand": {"@type": "Brand", "name": "ProfetaKit"},
           "offers": {"@type": "Offer", "priceCurrency": "PHP", "price": str(p["php_cents"] // 100), "availability": "https://schema.org/InStock", "url": SITE + p["slug"] + ".html"}}
-    page = head(p["title"], p["desc"], f"{SITE}{p['slug']}.html", "assets/previews/" + p["previews"][0][0], ld)
+    page = head(p["title"], p["desc"], f"{SITE}{p['slug']}.html", f"assets/covers/{p['slug']}.jpg", ld)
     inside = "".join(f"<li>{CHECK}<span>{x}</span></li>" for x in p["inside"])
     chips = "".join(f"<span>{x}</span>" for x in p["formats"])
     demo = f'<a class="btn btn-ghost btn-block" href="{p["demo"]}" target="_blank" rel="noopener">Try the live demo</a>' if p.get("demo") else ""
