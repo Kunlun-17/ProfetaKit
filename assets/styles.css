@@ -248,3 +248,25 @@ section { scroll-margin-top: 80px; }
 .thanks { max-width: 760px; margin: 0 auto; padding: 4rem 1.5rem 6rem; }
 .thanks h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 800; }
 .dl-list { list-style: none; padding: 0; margin: 2rem 0 1rem; display: grid; gap: .8rem; justify-items: start; }
+
+/* Catalogue */
+.product-shot { display: block; border-radius: 14px; overflow: hidden; border: 2px solid var(--ink); background: var(--white); aspect-ratio: 16 / 10; }
+.product-shot img { width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block; transition: transform .3s ease; }
+.product:hover .product-shot img { transform: scale(1.03); }
+.product-shelf { font-weight: 600; font-size: .875rem; color: var(--blue); }
+.product-bundle .product-shelf { color: var(--ink); }
+.shelf ul { list-style: none; padding: 0; margin: .4rem 0 0; display: grid; gap: .45rem; }
+.shelf li a { display: block; text-decoration: none; border-radius: 10px; padding: .5rem .8rem; font-weight: 600; }
+.shelf-money li a { background: rgba(255,255,255,.55); }
+.shelf-work li a { background: var(--paper); }
+.shelf-code li a { background: rgba(255,255,255,.08); }
+.shelf li a:hover { text-decoration: underline; }
+.pp-art { padding: 0; overflow: hidden; aspect-ratio: auto; }
+.pp-art img { width: 100%; height: auto; display: block; }
+.pp-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: .8rem; margin-top: 1.4rem; }
+.pp-gallery img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: top left; border: 2px solid var(--ink); border-radius: 12px; background: var(--white); }
+.pp-inside p { color: var(--ink-soft); }
+.product-wide { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); column-gap: 2rem; align-content: start; }
+.product-wide .product-shot { grid-row: 1 / span 6; aspect-ratio: auto; align-self: start; }
+.product-wide .btn { justify-self: start; width: auto; }
+@media (max-width: 900px) { .product-wide { display: flex; } .product-wide .btn { width: 100%; } }

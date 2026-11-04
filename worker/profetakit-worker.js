@@ -17,18 +17,33 @@
 
 /* Products. Prices are in centavos (₱249.00 = 24900). Files are R2 object keys. */
 const PRODUCTS = {
-  'debt-payoff-tracker': {
-    name: 'Debt Payoff Tracker', price: 24900,
-    files: ['money/debt-payoff-tracker.xlsx', 'money/quick-start-guide.pdf'],
-  },
-  'monthly-budget-tracker': {
-    name: 'Monthly Budget Tracker', price: 24900,
-    files: ['money/monthly-budget-tracker.xlsx', 'money/quick-start-guide.pdf'],
+  'online-seller-tracker': {
+    name: "Online Seller Bookkeeping & Inventory Tracker", price: 49900,
+    files: ["seller/online-seller-tracker.xlsx", "seller/quick-start-guide.pdf"],
   },
   'money-reset-bundle': {
-    name: 'Money Reset Bundle', price: 39900,
-    files: ['money/monthly-budget-tracker.xlsx', 'money/debt-payoff-tracker.xlsx',
-            'money/savings-goal-tracker.xlsx', 'money/quick-start-guide.pdf'],
+    name: "Money Reset Bundle", price: 39900,
+    files: ["money/monthly-budget-tracker.xlsx", "money/debt-payoff-tracker.xlsx", "money/savings-goal-tracker.xlsx", "money/quick-start-guide.pdf"],
+  },
+  'debt-payoff-tracker': {
+    name: "Debt Payoff Tracker", price: 24900,
+    files: ["money/debt-payoff-tracker.xlsx", "money/quick-start-guide.pdf"],
+  },
+  'monthly-budget-tracker': {
+    name: "Monthly Budget Tracker", price: 24900,
+    files: ["money/monthly-budget-tracker.xlsx", "money/quick-start-guide.pdf"],
+  },
+  'wedding-planner-spreadsheet': {
+    name: "Wedding Planner Spreadsheet", price: 39900,
+    files: ["wedding/wedding-planner.xlsx", "wedding/quick-start-guide.pdf"],
+  },
+  'ats-resume-template-pack': {
+    name: "ATS-Friendly Resume Template Pack", price: 29900,
+    files: ["resume/ats-resume-pack.zip"],
+  },
+  'kitboard-admin-dashboard': {
+    name: "Kitboard Admin Dashboard Template", price: 69900,
+    files: ["code/kitboard-admin-dashboard.zip"],
   },
 };
 

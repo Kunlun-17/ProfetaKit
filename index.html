@@ -38,7 +38,7 @@
   <nav aria-label="Main">
     <ul class="nav-links">
       <li><a href="#shelves">Kits</a></li>
-      <li><a href="#featured">New this week</a></li>
+      <li><a href="#featured">All kits</a></li>
       <li><a href="#how">How it works</a></li>
       <li><a href="#faq">FAQ</a></li>
     </ul>
@@ -50,7 +50,7 @@
   <section class="hero">
     <div class="hero-copy">
       <h1>Ready-made digital solutions.<span class="h1-line">Download, use, done.</span></h1>
-      <p class="lede">Templates and starter kits for your money, your work and your code. Each one is built so you can skip the setup and get straight to using it.</p>
+      <p class="lede">Templates and kits for your money, your work and your code. Each one is built so you can skip the setup and get straight to using it.</p>
       <div class="hero-actions">
         <a class="btn" href="#featured">Browse the kits</a>
         <a class="btn btn-ghost" href="#how">How it works</a>
@@ -63,7 +63,7 @@
       <div class="stage-tabs" role="tablist" aria-label="Preview a kit">
         <button role="tab" aria-selected="true" data-shape="0">Budget tracker</button>
         <button role="tab" aria-selected="false" data-shape="1">Dashboard</button>
-        <button role="tab" aria-selected="false" data-shape="2">Starter kit</button>
+        <button role="tab" aria-selected="false" data-shape="2">Dev template</button>
       </div>
     </div>
   </section>
@@ -71,27 +71,24 @@
   <section id="shelves" class="shelves" aria-labelledby="shelves-title">
     <h2 id="shelves-title">Pick your shelf</h2>
     <p class="section-lede">Every kit sits on one of three shelves. New kits land every two weeks, based on what people are actually looking for.</p>
-
     <div class="shelf-grid">
-      <a class="shelf shelf-money" href="#featured">
+      <div class="shelf shelf-money">
         <h3>Money</h3>
-        <p>Budget spreadsheets, debt payoff planners and savings trackers that do the math for you.</p>
-        <ul>
-          <li>Debt Payoff Tracker</li>
-          <li>Monthly Budget Tracker</li>
-          <li>Money Reset Bundle</li>
-        </ul>
-        <span class="shelf-status">3 kits ready</span>
-      </a>
+        <p>Budget spreadsheets, debt payoff planners and bookkeeping that do the maths for you.</p>
+        <ul><li><a href="online-seller-tracker.html">Online Seller Bookkeeping & Inventory Tracker</a></li><li><a href="money-reset-bundle.html">Money Reset Bundle</a></li><li><a href="debt-payoff-tracker.html">Debt Payoff Tracker</a></li><li><a href="monthly-budget-tracker.html">Monthly Budget Tracker</a></li></ul>
+        <span class="shelf-status">4 kits ready</span>
+      </div>
       <div class="shelf shelf-work">
-        <h3>Work</h3>
-        <p>Task trackers, project planners and client sheets for freelancers and small teams.</p>
-        <span class="shelf-status">First kits coming soon</span>
+        <h3>Work & Life</h3>
+        <p>Resumes that get read and planners for the big moments.</p>
+        <ul><li><a href="wedding-planner-spreadsheet.html">Wedding Planner Spreadsheet</a></li><li><a href="ats-resume-template-pack.html">ATS-Friendly Resume Template Pack</a></li></ul>
+        <span class="shelf-status">2 kits ready</span>
       </div>
       <div class="shelf shelf-code">
         <h3>Code</h3>
-        <p>SaaS starter kits, admin dashboards and developer tools, with live demos you can try before you buy.</p>
-        <span class="shelf-status">First kits coming soon</span>
+        <p>Admin dashboards and developer templates with live demos you can try first.</p>
+        <ul><li><a href="kitboard-admin-dashboard.html">Kitboard Admin Dashboard Template</a></li></ul>
+        <span class="shelf-status">1 kit ready</span>
       </div>
     </div>
   </section>
@@ -99,39 +96,66 @@
   <section id="featured" class="featured" aria-labelledby="featured-title">
     <div class="featured-head">
       <div>
-        <h2 id="featured-title">New this week: the money shelf</h2>
-        <p class="section-lede">Works in Google Sheets and Excel. Type in your numbers and the trackers handle the rest.</p>
+        <h2 id="featured-title">All kits</h2>
+        <p class="section-lede">Real files you can open today. Every page shows exactly what's inside.</p>
       </div>
     </div>
-
     <div class="product-row">
       <article class="product">
-        <div class="product-art art-debt" aria-hidden="true">
-          <span style="--w:92%"></span><span style="--w:70%"></span><span style="--w:44%"></span><span style="--w:18%"></span>
-        </div>
+        <a class="product-shot" href="online-seller-tracker.html" tabindex="-1" aria-hidden="true"><img src="assets/products/seller.jpg" alt="" loading="lazy" width="640" height="420"></a>
+        <p class="product-shelf">Money</p>
+        <h3><a href="online-seller-tracker.html">Online Seller Bookkeeping & Inventory Tracker</a></h3>
+        <p>Real profit on every order, after platform fees, shipping and product cost. Stock alerts included.</p>
+        <p class="price" data-usd="$15" data-php="₱499">$15</p>
+        <a class="btn btn-block" href="online-seller-tracker.html">See what's inside</a>
+      </article>
+      <article class="product product-bundle">
+        <p class="bundle-tag">Best value</p><a class="product-shot" href="money-reset-bundle.html" tabindex="-1" aria-hidden="true"><img src="assets/products/bundle.jpg" alt="" loading="lazy" width="640" height="420"></a>
+        <p class="product-shelf">Money</p>
+        <h3><a href="money-reset-bundle.html">Money Reset Bundle</a></h3>
+        <p>Budget, debt payoff and savings goal trackers that work together. Three kits for less than two.</p>
+        <p class="price" data-usd="$12" data-php="₱399">$12</p>
+        <a class="btn btn-block btn-yellow" href="money-reset-bundle.html">See what's inside</a>
+      </article>
+      <article class="product">
+        <a class="product-shot" href="debt-payoff-tracker.html" tabindex="-1" aria-hidden="true"><img src="assets/products/debt.jpg" alt="" loading="lazy" width="640" height="420"></a>
+        <p class="product-shelf">Money</p>
         <h3><a href="debt-payoff-tracker.html">Debt Payoff Tracker</a></h3>
-        <p>List your debts once and see your debt-free date. Compare the snowball and avalanche methods side by side.</p>
+        <p>Your debt-free date, and whether snowball or avalanche gets you there cheaper.</p>
         <p class="price" data-usd="$7" data-php="₱249">$7</p>
         <a class="btn btn-block" href="debt-payoff-tracker.html">See what's inside</a>
       </article>
-
       <article class="product">
-        <div class="product-art art-budget" aria-hidden="true">
-          <span style="--h:50%"></span><span style="--h:30%"></span><span style="--h:20%"></span>
-        </div>
+        <a class="product-shot" href="monthly-budget-tracker.html" tabindex="-1" aria-hidden="true"><img src="assets/products/budget.jpg" alt="" loading="lazy" width="640" height="420"></a>
+        <p class="product-shelf">Money</p>
         <h3><a href="monthly-budget-tracker.html">Monthly Budget Tracker</a></h3>
-        <p>Plan every paycheck, track spending by category and see where your money actually went each month.</p>
+        <p>Plan every paycheck and see what's left in each category, all month long.</p>
         <p class="price" data-usd="$7" data-php="₱249">$7</p>
         <a class="btn btn-block" href="monthly-budget-tracker.html">See what's inside</a>
       </article>
-
-      <article class="product product-bundle">
-        <p class="bundle-tag">Best value</p>
-        <div class="product-art art-bundle" aria-hidden="true"><i></i><i></i><i></i></div>
-        <h3><a href="money-reset-bundle.html">Money Reset Bundle</a></h3>
-        <p>Both trackers plus a Savings Goal Tracker. Three kits for less than the price of two, and future money kits added free.</p>
+      <article class="product">
+        <a class="product-shot" href="wedding-planner-spreadsheet.html" tabindex="-1" aria-hidden="true"><img src="assets/products/wedding.jpg" alt="" loading="lazy" width="640" height="420"></a>
+        <p class="product-shelf">Work & Life</p>
+        <h3><a href="wedding-planner-spreadsheet.html">Wedding Planner Spreadsheet</a></h3>
+        <p>Budget, guest list, vendors, seating and a checklist that counts down from your date.</p>
         <p class="price" data-usd="$12" data-php="₱399">$12</p>
-        <a class="btn btn-block btn-yellow" href="money-reset-bundle.html">Get the bundle</a>
+        <a class="btn btn-block" href="wedding-planner-spreadsheet.html">See what's inside</a>
+      </article>
+      <article class="product">
+        <a class="product-shot" href="ats-resume-template-pack.html" tabindex="-1" aria-hidden="true"><img src="assets/products/resume.jpg" alt="" loading="lazy" width="640" height="420"></a>
+        <p class="product-shelf">Work & Life</p>
+        <h3><a href="ats-resume-template-pack.html">ATS-Friendly Resume Template Pack</a></h3>
+        <p>Three resumes that applicant-tracking systems can read, plus a matching cover letter.</p>
+        <p class="price" data-usd="$9" data-php="₱299">$9</p>
+        <a class="btn btn-block" href="ats-resume-template-pack.html">See what's inside</a>
+      </article>
+      <article class="product product-wide">
+        <a class="product-shot" href="kitboard-admin-dashboard.html" tabindex="-1" aria-hidden="true"><img src="assets/products/kitboard.jpg" alt="" loading="lazy" width="640" height="420"></a>
+        <p class="product-shelf">Code</p>
+        <h3><a href="kitboard-admin-dashboard.html">Kitboard Admin Dashboard Template</a></h3>
+        <p>8-page HTML admin dashboard with dark mode, charts and sortable tables. No build step.</p>
+        <p class="price" data-usd="$19" data-php="₱699">$19</p>
+        <a class="btn btn-block" href="kitboard-admin-dashboard.html">See what's inside</a>
       </article>
     </div>
   </section>
@@ -149,8 +173,8 @@
     <div class="soon-inner">
       <h2 id="soon-title">Coming to the shelves</h2>
       <ul class="soon-list">
-        <li><strong>SaaS starter kits</strong> with login, payments and a dashboard already wired up</li>
-        <li><strong>Admin dashboard templates</strong> in HTML and React, with live demos</li>
+        <li><strong>More money trackers</strong> for freelancers, side hustles and shared household bills</li>
+        <li><strong>React and Next.js dashboard templates</strong> with live demos</li>
         <li><strong>Image library membership</strong> with unlimited downloads for your projects</li>
       </ul>
       <p>Follow along to hear when they drop.</p>
@@ -168,8 +192,8 @@
       <p>Right after payment you're taken to your download page. Save the link: you can come back to it anytime.</p>
     </details>
     <details>
-      <summary>Which apps do the trackers work in?</summary>
-      <p>Google Sheets (free) and Microsoft Excel 2016 or newer. Each product page lists the exact formats.</p>
+      <summary>Which apps do I need?</summary>
+      <p>Spreadsheets work in Google Sheets (free) and Microsoft Excel 2016 or newer. Resume templates open in Word or Google Docs. The dashboard template is plain HTML that runs in any browser. Each product page lists the exact formats.</p>
     </details>
     <details>
       <summary>What payment methods can I use?</summary>
