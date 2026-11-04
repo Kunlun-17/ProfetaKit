@@ -5,6 +5,7 @@
    POST /webhook                   PayMongo says a payment is paid -> mark the order paid
    GET  /order?id=ORDER            the thank-you page asks: is this order paid, what can I download?
    GET  /download?id=ORDER&file=N  stream a purchased file from the private R2 bucket
+   GET  /geo                       the visitor's country (from Cloudflare), used to show local prices
 
    Bindings (Cloudflare -> Worker -> Settings):
      ORDERS  -> a KV namespace (stores orders)
@@ -151,6 +152,8 @@ export default {
       if (req.method === 'POST' && url.pathname === '/webhook') return await webhook(req, env);
       if (req.method === 'GET' && url.pathname === '/order') return await orderStatus(url, env);
       if (req.method === 'GET' && url.pathname === '/download') return await download(url, env);
+      if (req.method === 'GET' && url.pathname === '/geo')
+        return json(env, { country: (req.cf && req.cf.country) || '' });
       return new Response('ProfetaKit store OK');
     } catch (e) {
       if (e instanceof UserError) return json(env, { error: e.message }, 400);

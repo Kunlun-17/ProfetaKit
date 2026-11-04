@@ -6,18 +6,32 @@
 
   /* ---------- Local pricing ----------
      Visitors in the Philippines see pesos; everyone else sees US dollars.
-     Detected from the visitor's time zone and language, no permission needed. */
-  function inPhilippines() {
-    var tz = "", langs = [];
+     The country comes from the store Worker (Cloudflare knows it from the connection).
+     Until that answers, we guess from the device's time zone and language. */
+  var STORE_API_GEO = "https://profetakit-store.kunlun-dafreta-1.workers.dev";
+  function applyCurrency(cur) {
+    document.documentElement.setAttribute("data-currency", cur);
+    document.querySelectorAll(".price[data-usd]").forEach(function (el) {
+      el.textContent = el.getAttribute("data-" + cur);
+    });
+  }
+  function guessFromDevice() {
+    var tz = "", langs = "";
     try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch (e) {}
     langs = (navigator.languages || [navigator.language || ""]).join(",").toLowerCase();
-    return tz === "Asia/Manila" || /(^|,)(fil|tl)(-|,|$)|-ph(,|$)/.test(langs);
+    return tz === "Asia/Manila" || /(^|,)(fil|tl)(-|,|$)|-ph(,|$)/.test(langs) ? "php" : "usd";
   }
-  var currency = inPhilippines() ? "php" : "usd";
-  document.documentElement.setAttribute("data-currency", currency);
-  document.querySelectorAll(".price[data-usd]").forEach(function (el) {
-    el.textContent = el.getAttribute("data-" + currency);
-  });
+  var cached = null;
+  try { cached = sessionStorage.getItem("pk-cur"); } catch (e) {}
+  applyCurrency(cached || guessFromDevice());
+  if (!cached && window.fetch) {
+    fetch(STORE_API_GEO + "/geo").then(function (r) { return r.json(); }).then(function (j) {
+      if (!j || !j.country) return;
+      var cur = j.country === "PH" ? "php" : "usd";
+      try { sessionStorage.setItem("pk-cur", cur); } catch (e) {}
+      applyCurrency(cur);
+    }).catch(function () {});
+  }
 
   /* ---------- Checkout (ProfetaKit Cloudflare Worker) ---------- */
   // Set this to your Worker's address after you deploy it, e.g. "https://profetakit.yourname.workers.dev"
