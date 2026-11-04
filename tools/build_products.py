@@ -1,124 +1,273 @@
-"""Builds product pages, the homepage catalogue, sitemap and the Worker price list from tools/catalog.py.
-Run from the repo root: python3 tools/build_products.py"""
-import json, re, pathlib, sys
+"""Builds the whole site from tools/catalog.py: homepage store, product pages, thank-you page,
+sitemap, and the Worker's price list. Run from the repo root: python3 tools/build_products.py"""
+import json, re, pathlib, sys, html
 root = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(root / "tools"))
 from catalog import PRODUCTS, SHELVES
 
 SITE = "https://kunlun-17.github.io/ProfetaKit/"
-index_path = root / "index.html"
-index = index_path.read_text()
+CAT_KEY = {"money": "money", "life": "life", "code": "code"}
+esc = html.escape
 
-# ---------- homepage catalogue ----------
-def card(p):
-    best = '<p class="bundle-tag">Best value</p>' if p.get("best") else ""
-    cls = "product product-bundle" if p.get("best") else "product"
-    if p is PRODUCTS[-1] and len(PRODUCTS) % 3 == 1:
-        cls += " product-wide"
-    btn = "btn btn-block btn-yellow" if p.get("best") else "btn btn-block"
-    return f'''      <article class="{cls}">
-        {best}<a class="product-shot" href="{p["slug"]}.html" tabindex="-1" aria-hidden="true"><img src="assets/products/{p["img"]}" alt="" loading="lazy" width="640" height="420"></a>
-        <p class="product-shelf">{SHELVES[p["shelf"]][0]}</p>
-        <h3><a href="{p["slug"]}.html">{p["name"]}</a></h3>
-        <p>{p["card"]}</p>
-        <p class="price" data-usd="{p["usd"]}" data-php="{p["php"]}">{p["usd"]}</p>
-        <a class="{btn}" href="{p["slug"]}.html">See what's inside</a>
+LOGO = '<svg viewBox="0 0 40 40" aria-hidden="true"><rect x="3" y="11" width="34" height="25" rx="6" fill="#16181F"/><rect x="3" y="11" width="34" height="9" rx="4.5" fill="#2D4BFF"/><path d="M14 11V8a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v3" fill="none" stroke="#16181F" stroke-width="3"/><rect x="17" y="17" width="6" height="6" rx="1.5" fill="#FFD54A"/></svg>'
+CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>'
+
+
+def head(title, desc, canonical, og_image=None, ld=None, noindex=False):
+    og = f'<meta property="og:image" content="{SITE}{og_image}">' if og_image else ""
+    ldj = f'<script type="application/ld+json">{json.dumps(ld)}</script>' if ld else ""
+    robots = '<meta name="robots" content="noindex">' if noindex else ""
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{esc(title)}</title>
+<meta name="description" content="{esc(desc)}">
+<link rel="canonical" href="{canonical}">
+{robots}
+<meta property="og:type" content="website">
+<meta property="og:title" content="{esc(title)}">
+<meta property="og:description" content="{esc(desc)}">
+<meta property="og:url" content="{canonical}">
+{og}
+<meta name="theme-color" content="#F5F6F8">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+{ldj}
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="./" aria-label="ProfetaKit home">{LOGO}<span>ProfetaKit</span></a>
+    <nav aria-label="Main"><ul class="nav">
+      <li><a href="./#store">Shop</a></li>
+      <li><a href="./#store" data-jump="money">Money</a></li>
+      <li><a href="./#store" data-jump="life">Work &amp; Life</a></li>
+      <li><a href="./#store" data-jump="code">Code</a></li>
+      <li><a href="./#faq">FAQ</a></li>
+    </ul></nav>
+    <a class="btn btn-small" href="./#store">Browse kits</a>
+  </div>
+</header>
+"""
+
+
+FOOT = """<footer class="foot">
+  <div class="wrap">
+    <div><strong>ProfetaKit</strong>Ready-made digital solutions. Download, use, done.</div>
+    <p class="legal">ProfetaKit is a Dafreta Networks company. Charges appear as Dafreta Networks.<br>© <span id="year">2026</span> ProfetaKit. All rights reserved.</p>
+  </div>
+</footer>
+<script src="assets/main.js"></script>
+<script>(function(){var onStore=!!document.querySelector(".cat");document.querySelectorAll("[data-jump]").forEach(function(a){var c=a.getAttribute("data-jump");if(!onStore){a.href="./#store?cat="+c;return;}a.addEventListener("click",function(){var b=document.querySelector('.cat[data-cat="'+c+'"]');if(b)b.click();});});})();</script>
+</body>
+</html>
+"""
+
+
+def previews(p):
+    return [{"src": "assets/previews/" + f, "cap": c} for f, c in p["previews"]]
+
+
+def card(p, order):
+    cat = p["shelf"]
+    badge = '<span class="badge">Best value</span>' if p.get("best") else ""
+    search = " ".join([p["name"], p["card"], SHELVES[cat][0], " ".join(p["formats"]), " ".join(p["inside"])]).lower()
+    first = p["previews"][0][0]
+    return f'''      <article class="card" data-cat="{cat}" data-price="{p["php_cents"]}" data-order="{order}" data-search="{esc(search)}">
+        <div class="card-media">
+          {badge}<span class="shots">{len(p["previews"])} previews</span>
+          <img src="assets/previews/{first}" alt="Preview of {esc(p["name"])}" loading="lazy" width="640" height="480">
+          <button type="button" class="btn btn-light btn-small quick" data-quick="{p["slug"]}">Quick look</button>
+        </div>
+        <div class="card-body">
+          <p class="card-cat">{SHELVES[cat][0]}</p>
+          <h3><a href="{p["slug"]}.html">{esc(p["name"])}</a></h3>
+          <p class="card-desc">{esc(p["card"])}</p>
+          <div class="card-foot">
+            <span class="price" data-usd="{p["usd"]}" data-php="{p["php"]}">{p["usd"]}</span>
+            <span class="formats">{" · ".join(p["formats"][:2])}</span>
+          </div>
+        </div>
       </article>'''
 
-shelf_html = ""
-for key, (label, blurb) in SHELVES.items():
-    items = [p for p in PRODUCTS if p["shelf"] == key]
-    cls = {"money": "shelf shelf-money", "life": "shelf shelf-work", "code": "shelf shelf-code"}[key]
-    lis = "".join(f'<li><a href="{p["slug"]}.html">{p["name"]}</a></li>' for p in items)
-    shelf_html += f'''      <div class="{cls}">
-        <h3>{label}</h3>
-        <p>{blurb}</p>
-        <ul>{lis}</ul>
-        <span class="shelf-status">{len(items)} kit{"s" if len(items) != 1 else ""} ready</span>
-      </div>
-'''
 
-catalogue = f'''<section id="shelves" class="shelves" aria-labelledby="shelves-title">
-    <h2 id="shelves-title">Pick your shelf</h2>
-    <p class="section-lede">Every kit sits on one of three shelves. New kits land every two weeks, based on what people are actually looking for.</p>
-    <div class="shelf-grid">
-{shelf_html}    </div>
-  </section>
+# ---------------- homepage ----------------
+counts = {k: sum(1 for p in PRODUCTS if p["shelf"] == k) for k in SHELVES}
+cats_html = f'<button type="button" class="cat" data-cat="all" aria-pressed="true"><span class="dot"></span>All kits <span class="n">{len(PRODUCTS)}</span></button>' + "".join(
+    f'<button type="button" class="cat" data-cat="{k}" aria-pressed="false"><span class="dot"></span>{lab} <span class="n">{counts[k]}</span></button>' for k, (lab, _) in SHELVES.items())
+catalog_json = {p["slug"]: {"slug": p["slug"], "name": p["name"], "sub": p["sub"], "cat": p["shelf"], "catLabel": SHELVES[p["shelf"]][0],
+                            "usd": p["usd"], "php": p["php"], "formats": p["formats"], "inside": p["inside"], "previews": previews(p)} for p in PRODUCTS}
 
-  <section id="featured" class="featured" aria-labelledby="featured-title">
-    <div class="featured-head">
+home = head("ProfetaKit – Digital Templates & Starter Kits",
+            "Ready-made spreadsheets, resume templates and admin dashboards. Preview every page before you buy, pay with GCash, Maya or card, and download instantly.",
+            SITE, PRODUCTS[0]["previews"][0][0] and "assets/previews/" + PRODUCTS[1]["previews"][0][0],
+            {"@context": "https://schema.org", "@type": "Organization", "name": "ProfetaKit", "url": SITE, "parentOrganization": {"@type": "Organization", "name": "Dafreta Networks"}})
+home += f'''<main id="main">
+  <section class="hero">
+    <div class="wrap">
       <div>
-        <h2 id="featured-title">All kits</h2>
-        <p class="section-lede">Real files you can open today. Every page shows exactly what's inside.</p>
-      </div>
-    </div>
-    <div class="product-row">
-{chr(10).join(card(p) for p in PRODUCTS)}
-    </div>
-  </section>
-
-  '''
-index = re.sub(r'<section id="shelves".*?(?=<section id="how")', catalogue, index, flags=re.S)
-index_path.write_text(index)
-
-# ---------- product pages ----------
-head_nav = index.split('<main id="main">')[0]
-footer = index.split('</main>')[1]
-for p in PRODUCTS:
-    page = head_nav
-    page = re.sub(r"<title>.*?</title>", f"<title>{p['title']}</title>", page, flags=re.S)
-    page = re.sub(r'<meta name="description" content=".*?">', f'<meta name="description" content="{p["desc"]}">', page)
-    page = re.sub(r'<link rel="canonical" href=".*?">', f'<link rel="canonical" href="{SITE}{p["slug"]}.html">', page)
-    page = re.sub(r'<meta property="og:title" content=".*?">', f'<meta property="og:title" content="{p["name"]} – ProfetaKit">', page)
-    page = re.sub(r'<meta property="og:url" content=".*?">', f'<meta property="og:url" content="{SITE}{p["slug"]}.html">\n<meta property="og:image" content="{SITE}assets/products/{p["img"]}">', page)
-    ld = {"@context": "https://schema.org", "@type": "Product", "name": p["name"], "description": p["desc"], "image": SITE + "assets/products/" + p["img"],
-          "brand": {"@type": "Brand", "name": "ProfetaKit"},
-          "offers": {"@type": "Offer", "priceCurrency": "PHP", "price": str(p["php_cents"] // 100), "availability": "https://schema.org/InStock", "url": SITE + p["slug"] + ".html"}}
-    page = re.sub(r'<script type="application/ld\+json">.*?</script>', '<script type="application/ld+json">\n' + json.dumps(ld) + '\n</script>', page, flags=re.S)
-    for a in ("#shelves", "#featured", "#how", "#faq"):
-        page = page.replace(f'href="{a}"', f'href="./{a}"')
-    inside = "\n".join(f"          <li>{i}</li>" for i in p["inside"])
-    fmts = "".join(f"<span>{x}</span>" for x in p["formats"])
-    gallery = ""
-    if p.get("gallery"):
-        gallery = '<div class="pp-gallery">' + "".join(f'<a href="assets/products/{g}" target="_blank" rel="noopener"><img src="assets/products/{g}" alt="Enlarge preview" loading="lazy"></a>' for g in p["gallery"]) + "</div>"
-    demo = f'<a class="btn btn-ghost btn-block" href="{p["demo"]}" target="_blank" rel="noopener">Try the live demo</a>' if p.get("demo") else ""
-    page += f'''<main id="main">
-  <p class="crumbs"><a href="./">Home</a> / <a href="./#shelves">{SHELVES[p["shelf"]][0]}</a> / {p["name"]}</p>
-  <section class="pp">
-    <div>
-      <div class="pp-art"><img src="assets/products/{p["img"]}" alt="Preview of the {p["name"]}" width="1400" height="900"></div>
-      {gallery}
-    </div>
-    <div>
-      <h1>{p["h1"]}</h1>
-      <p class="lede">{p["sub"]}</p>
-      <div class="pp-formats">{fmts}</div>
-      <div class="pp-buy">
-        <div class="pp-buy-row">
-          <p class="price" data-usd="{p["usd"]}" data-php="{p["php"]}">{p["usd"]}</p>
+        <h1>Ready-made digital solutions.<em>Download, use, done.</em></h1>
+        <p class="lede">Spreadsheets that do the maths, resumes that get read and dashboards you can ship today. See every page before you buy.</p>
+        <div class="hero-actions">
+          <a class="btn btn-cobalt" href="#store">Shop all {len(PRODUCTS)} kits</a>
+          <a class="btn btn-ghost" href="#how">How it works</a>
         </div>
-        <button type="button" class="btn btn-yellow btn-block" data-buy="{p["slug"]}">Buy now</button>
-        {demo}
-        <p class="buy-error" role="alert" hidden></p>
-        <p class="pp-small">Pay with GCash, Maya, GrabPay or card. Your download opens right after payment. Prices are shown in your local currency.</p>
-      </div>
-      <div class="pp-inside">
-        <h2>What's inside</h2>
-        <ul>
-{inside}
+        <ul class="facts">
+          <li>{CHECK}Instant download</li>
+          <li>{CHECK}GCash, Maya or card</li>
+          <li>{CHECK}Real previews of every file</li>
         </ul>
       </div>
-      <div class="pp-inside">
-        <h2>Made for</h2>
-        <p>{p["who"]}</p>
+      <div class="stage">
+        <canvas id="kit-canvas" aria-hidden="true"></canvas>
+        <p class="stage-label"><b>Inside the kits</b></p>
+        <div class="stage-tabs" role="tablist" aria-label="Preview a kit">
+          <button role="tab" aria-selected="true" data-shape="0">Budget tracker</button>
+          <button role="tab" aria-selected="false" data-shape="1">Dashboard</button>
+          <button role="tab" aria-selected="false" data-shape="2">Dev template</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="store" class="store" aria-labelledby="store-title">
+    <div class="wrap">
+      <div class="store-head">
+        <div>
+          <h2 id="store-title">Shop the kits</h2>
+          <p>Pick a category, or search for what you need. Click Quick look to flip through the real pages.</p>
+        </div>
+      </div>
+      <div class="toolbar">
+        <div class="cats" role="group" aria-label="Categories">{cats_html}</div>
+        <div class="tools-right">
+          <label class="search"><span class="sr-only">Search kits</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><input type="search" placeholder="Search kits…" data-store-search></label>
+          <label class="sort"><span class="sr-only">Sort</span><select data-store-sort><option value="featured">Featured</option><option value="low">Price: low to high</option><option value="high">Price: high to low</option></select></label>
+        </div>
+      </div>
+      <div class="grid" data-store>
+{chr(10).join(card(p, i) for i, p in enumerate(PRODUCTS))}
+        <p class="empty" hidden>No kits match that search yet. Try another word, or pick All kits.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="how" class="how" aria-labelledby="how-title">
+    <div class="wrap">
+      <h2 id="how-title">From checkout to using it in about a minute.</h2>
+      <ol class="steps">
+        <li><h3>Preview everything</h3><p>Every kit shows real screenshots of each tab and page, so you know exactly what you're getting.</p></li>
+        <li><h3>Pay your way</h3><p>GCash, Maya, GrabPay, QR Ph or any Visa or Mastercard, local or international.</p></li>
+        <li><h3>Download and go</h3><p>Your files open right after payment. Make a copy, add your details, done.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="soon" aria-labelledby="soon-title">
+    <div class="wrap">
+      <div class="soon-box">
+        <div>
+          <h2 id="soon-title">New kits every two weeks.</h2>
+          <p>We watch what people are searching for and build the kits they actually need. Follow along to hear when they drop.</p>
+          <div class="hero-actions"><a class="btn btn-light" href="https://www.facebook.com/" rel="noopener">Follow on Facebook</a><a class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.3)" href="https://www.tiktok.com/" rel="noopener">Follow on TikTok</a></div>
+        </div>
+        <ul class="soon-list">
+          <li><strong>More money trackers</strong>For freelancers, side hustles and shared household bills.</li>
+          <li><strong>React and Next.js dashboards</strong>With live demos you can click through first.</li>
+          <li><strong>Image library membership</strong>Unlimited downloads for your projects.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="faq" aria-labelledby="faq-title">
+    <div class="wrap">
+      <h2 id="faq-title">Questions before you buy</h2>
+      <div>
+        <details><summary>How do I get my files?</summary><p>Right after payment you're taken to your download page. Save the link: it keeps working for a year.</p></details>
+        <details><summary>Which apps do I need?</summary><p>Spreadsheets work in Google Sheets (free) and Microsoft Excel 2016 or newer. Resume templates open in Word or Google Docs. The dashboard template is plain HTML that runs in any browser.</p></details>
+        <details><summary>What payment methods can I use?</summary><p>GCash, Maya, GrabPay, QR Ph, and Visa or Mastercard credit and debit cards, including cards issued outside the Philippines.</p></details>
+        <details><summary>Why does my statement say Dafreta Networks?</summary><p>ProfetaKit is run by Dafreta Networks, so that's the name your bank or e-wallet shows for the charge.</p></details>
+        <details><summary>Can I get a refund?</summary><p>Because files are delivered instantly, sales are final. If a file doesn't open or something is broken, message us and we'll fix it or refund you.</p></details>
       </div>
     </div>
   </section>
 </main>
-'''
-    page += footer
+
+<dialog class="ql" id="quicklook" aria-label="Quick look">
+  <button class="ql-close" type="button" aria-label="Close">×</button>
+  <div class="ql-grid"><div class="ql-gallery"></div><div class="ql-info"></div></div>
+</dialog>
+<script type="application/json" id="catalog-data">{json.dumps(catalog_json)}</script>
+''' + FOOT
+(root / "index.html").write_text(home)
+
+# ---------------- product pages ----------------
+for p in PRODUCTS:
+    cat = p["shelf"]
+    ld = {"@context": "https://schema.org", "@type": "Product", "name": p["name"], "description": p["desc"],
+          "image": [SITE + "assets/previews/" + f for f, _ in p["previews"]], "brand": {"@type": "Brand", "name": "ProfetaKit"},
+          "offers": {"@type": "Offer", "priceCurrency": "PHP", "price": str(p["php_cents"] // 100), "availability": "https://schema.org/InStock", "url": SITE + p["slug"] + ".html"}}
+    page = head(p["title"], p["desc"], f"{SITE}{p['slug']}.html", "assets/previews/" + p["previews"][0][0], ld)
+    inside = "".join(f"<li>{CHECK}<span>{x}</span></li>" for x in p["inside"])
+    chips = "".join(f"<span>{x}</span>" for x in p["formats"])
+    demo = f'<a class="btn btn-ghost btn-block" href="{p["demo"]}" target="_blank" rel="noopener">Try the live demo</a>' if p.get("demo") else ""
+    rel = [q for q in PRODUCTS if q["slug"] != p["slug"] and q["shelf"] == cat][:3]
+    rel += [q for q in PRODUCTS if q["slug"] != p["slug"] and q not in rel][: 4 - len(rel)]
+    page += f'''<main id="main">
+  <div class="wrap"><p class="crumbs"><a href="./">Home</a> / <a href="./#store" data-jump="{cat}">{SHELVES[cat][0]}</a> / {esc(p["name"])}</p></div>
+  <section class="pp">
+    <div class="wrap">
+      <div class="pp-gallery" data-gallery='{esc(json.dumps(previews(p)))}'>
+        <div class="gallery-main"><img src="assets/previews/{p["previews"][0][0]}" alt="{esc(p["previews"][0][1])}"></div>
+      </div>
+      <div class="pp-info">
+        <p class="pp-cat" data-cat="{cat}">{SHELVES[cat][0]}</p>
+        <h1>{esc(p["h1"])}</h1>
+        <p class="lede">{esc(p["sub"])}</p>
+        <div class="chips">{chips}</div>
+        <div class="buybox">
+          <span class="price" data-usd="{p["usd"]}" data-php="{p["php"]}">{p["usd"]}</span>
+          <button type="button" class="btn btn-cobalt btn-block" data-buy="{p["slug"]}">Buy now</button>
+          {demo}
+          <p class="buy-error" role="alert" hidden></p>
+          <p class="buy-note">Pay with GCash, Maya, GrabPay, QR Ph or card. Your download opens right after payment. Prices are shown in your local currency.</p>
+        </div>
+        <div class="pp-section"><h2>What's inside</h2><ul>{inside}</ul></div>
+        <div class="pp-section"><h2>Made for</h2><p>{esc(p["who"])}</p></div>
+      </div>
+    </div>
+  </section>
+  <section class="related" aria-labelledby="rel-title">
+    <div class="wrap">
+      <h2 id="rel-title">You might also like</h2>
+      <div class="grid">
+{chr(10).join(card(q, i) for i, q in enumerate(rel)).replace('<button type="button" class="btn btn-light btn-small quick" data-quick=', '<a class="btn btn-light btn-small quick" href=').replace('">Quick look</button>', '.html">View kit</a>')}
+      </div>
+    </div>
+  </section>
+</main>
+''' + FOOT
     (root / f"{p['slug']}.html").write_text(page)
+
+# ---------------- thank-you page ----------------
+thanks_old = (root / "thanks.html").read_text()
+script = re.search(r'<script>\n\(function \(\) \{.*?</script>', thanks_old, flags=re.S).group(0)
+thanks = head("Your downloads – ProfetaKit", "Your ProfetaKit downloads.", SITE + "thanks.html", noindex=True)
+thanks += '''<main id="main" class="thanks">
+  <h1 id="t-title">Checking your payment…</h1>
+  <p class="lede" id="t-msg">This usually takes a few seconds.</p>
+  <ul class="dl-list" id="t-files"></ul>
+  <p class="buy-note" id="t-note" hidden>Bookmark this page. Your download link keeps working for a year.</p>
+</main>
+''' + FOOT.replace("</body>", script + "\n</body>")
+(root / "thanks.html").write_text(thanks)
 
 # remove pages for products no longer sold
 keep = {p["slug"] for p in PRODUCTS} | {"index", "thanks"}
@@ -126,12 +275,12 @@ for old in root.glob("*.html"):
     if old.stem not in keep:
         old.unlink()
 
-# ---------- sitemap ----------
+# ---------------- sitemap ----------------
 urls = [SITE] + [f"{SITE}{p['slug']}.html" for p in PRODUCTS] + [f"{SITE}demo/kitboard/index.html"]
 (root / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
     "".join(f"  <url><loc>{u}</loc></url>\n" for u in urls) + "</urlset>\n")
 
-# ---------- Worker price list ----------
+# ---------------- Worker price list ----------------
 wpath = root / "worker" / "profetakit-worker.js"
 w = wpath.read_text()
 block = "const PRODUCTS = {\n" + "".join(

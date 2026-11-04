@@ -4,220 +4,252 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ProfetaKit – Digital Templates &amp; Starter Kits</title>
-<meta name="description" content="Ready-made digital templates, SaaS starter kits, dashboards and productivity tools. Instant download, easy to customize, new kits added every two weeks.">
+<meta name="description" content="Ready-made spreadsheets, resume templates and admin dashboards. Preview every page before you buy, pay with GCash, Maya or card, and download instantly.">
 <link rel="canonical" href="https://kunlun-17.github.io/ProfetaKit/">
+
 <meta property="og:type" content="website">
-<meta property="og:title" content="ProfetaKit – Digital Templates & Starter Kits">
-<meta property="og:description" content="Ready-made digital solutions. Download, use, done.">
+<meta property="og:title" content="ProfetaKit – Digital Templates &amp; Starter Kits">
+<meta property="og:description" content="Ready-made spreadsheets, resume templates and admin dashboards. Preview every page before you buy, pay with GCash, Maya or card, and download instantly.">
 <meta property="og:url" content="https://kunlun-17.github.io/ProfetaKit/">
-<meta name="theme-color" content="#F4F6FB">
+<meta property="og:image" content="https://kunlun-17.github.io/ProfetaKit/assets/previews/budget-1.jpg">
+<meta name="theme-color" content="#F5F6F8">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/styles.css">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "ProfetaKit",
-  "url": "https://kunlun-17.github.io/ProfetaKit/",
-  "description": "Digital templates and starter kits for money, work and code.",
-  "parentOrganization": {"@type": "Organization", "name": "Dafreta Networks"}
-}
-</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "name": "ProfetaKit", "url": "https://kunlun-17.github.io/ProfetaKit/", "parentOrganization": {"@type": "Organization", "name": "Dafreta Networks"}}</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
-
-<header class="nav">
-  <a class="brand" href="./" aria-label="ProfetaKit home">
-    <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true"><rect x="4" y="12" width="32" height="24" rx="5" fill="#15172E"/><rect x="4" y="12" width="32" height="8" rx="4" fill="#FFC93C"/><path d="M14 12V8a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v4" fill="none" stroke="#15172E" stroke-width="3"/><rect x="17" y="17" width="6" height="6" rx="1.5" fill="#15172E"/></svg>
-    <span>ProfetaKit</span>
-  </a>
-  <nav aria-label="Main">
-    <ul class="nav-links">
-      <li><a href="#shelves">Kits</a></li>
-      <li><a href="#featured">All kits</a></li>
-      <li><a href="#how">How it works</a></li>
-      <li><a href="#faq">FAQ</a></li>
-    </ul>
-  </nav>
-  <a class="btn btn-small" href="#featured">Browse kits</a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="./" aria-label="ProfetaKit home"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="3" y="11" width="34" height="25" rx="6" fill="#16181F"/><rect x="3" y="11" width="34" height="9" rx="4.5" fill="#2D4BFF"/><path d="M14 11V8a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v3" fill="none" stroke="#16181F" stroke-width="3"/><rect x="17" y="17" width="6" height="6" rx="1.5" fill="#FFD54A"/></svg><span>ProfetaKit</span></a>
+    <nav aria-label="Main"><ul class="nav">
+      <li><a href="./#store">Shop</a></li>
+      <li><a href="./#store" data-jump="money">Money</a></li>
+      <li><a href="./#store" data-jump="life">Work &amp; Life</a></li>
+      <li><a href="./#store" data-jump="code">Code</a></li>
+      <li><a href="./#faq">FAQ</a></li>
+    </ul></nav>
+    <a class="btn btn-small" href="./#store">Browse kits</a>
+  </div>
 </header>
-
 <main id="main">
   <section class="hero">
-    <div class="hero-copy">
-      <h1>Ready-made digital solutions.<span class="h1-line">Download, use, done.</span></h1>
-      <p class="lede">Templates and kits for your money, your work and your code. Each one is built so you can skip the setup and get straight to using it.</p>
-      <div class="hero-actions">
-        <a class="btn" href="#featured">Browse the kits</a>
-        <a class="btn btn-ghost" href="#how">How it works</a>
-      </div>
-      <p class="hero-note">Pay with GCash, Maya or card. Files arrive the moment you pay.</p>
-    </div>
-
-    <div class="hero-stage">
-      <canvas id="kit-canvas" aria-hidden="true"></canvas>
-      <div class="stage-tabs" role="tablist" aria-label="Preview a kit">
-        <button role="tab" aria-selected="true" data-shape="0">Budget tracker</button>
-        <button role="tab" aria-selected="false" data-shape="1">Dashboard</button>
-        <button role="tab" aria-selected="false" data-shape="2">Dev template</button>
-      </div>
-    </div>
-  </section>
-
-  <section id="shelves" class="shelves" aria-labelledby="shelves-title">
-    <h2 id="shelves-title">Pick your shelf</h2>
-    <p class="section-lede">Every kit sits on one of three shelves. New kits land every two weeks, based on what people are actually looking for.</p>
-    <div class="shelf-grid">
-      <div class="shelf shelf-money">
-        <h3>Money</h3>
-        <p>Budget spreadsheets, debt payoff planners and bookkeeping that do the maths for you.</p>
-        <ul><li><a href="online-seller-tracker.html">Online Seller Bookkeeping & Inventory Tracker</a></li><li><a href="money-reset-bundle.html">Money Reset Bundle</a></li><li><a href="debt-payoff-tracker.html">Debt Payoff Tracker</a></li><li><a href="monthly-budget-tracker.html">Monthly Budget Tracker</a></li></ul>
-        <span class="shelf-status">4 kits ready</span>
-      </div>
-      <div class="shelf shelf-work">
-        <h3>Work & Life</h3>
-        <p>Resumes that get read and planners for the big moments.</p>
-        <ul><li><a href="wedding-planner-spreadsheet.html">Wedding Planner Spreadsheet</a></li><li><a href="ats-resume-template-pack.html">ATS-Friendly Resume Template Pack</a></li></ul>
-        <span class="shelf-status">2 kits ready</span>
-      </div>
-      <div class="shelf shelf-code">
-        <h3>Code</h3>
-        <p>Admin dashboards and developer templates with live demos you can try first.</p>
-        <ul><li><a href="kitboard-admin-dashboard.html">Kitboard Admin Dashboard Template</a></li></ul>
-        <span class="shelf-status">1 kit ready</span>
-      </div>
-    </div>
-  </section>
-
-  <section id="featured" class="featured" aria-labelledby="featured-title">
-    <div class="featured-head">
+    <div class="wrap">
       <div>
-        <h2 id="featured-title">All kits</h2>
-        <p class="section-lede">Real files you can open today. Every page shows exactly what's inside.</p>
+        <h1>Ready-made digital solutions.<em>Download, use, done.</em></h1>
+        <p class="lede">Spreadsheets that do the maths, resumes that get read and dashboards you can ship today. See every page before you buy.</p>
+        <div class="hero-actions">
+          <a class="btn btn-cobalt" href="#store">Shop all 7 kits</a>
+          <a class="btn btn-ghost" href="#how">How it works</a>
+        </div>
+        <ul class="facts">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Instant download</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>GCash, Maya or card</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Real previews of every file</li>
+        </ul>
+      </div>
+      <div class="stage">
+        <canvas id="kit-canvas" aria-hidden="true"></canvas>
+        <p class="stage-label"><b>Inside the kits</b></p>
+        <div class="stage-tabs" role="tablist" aria-label="Preview a kit">
+          <button role="tab" aria-selected="true" data-shape="0">Budget tracker</button>
+          <button role="tab" aria-selected="false" data-shape="1">Dashboard</button>
+          <button role="tab" aria-selected="false" data-shape="2">Dev template</button>
+        </div>
       </div>
     </div>
-    <div class="product-row">
-      <article class="product">
-        <a class="product-shot" href="online-seller-tracker.html" tabindex="-1" aria-hidden="true"><img src="assets/products/seller.jpg" alt="" loading="lazy" width="640" height="420"></a>
-        <p class="product-shelf">Money</p>
-        <h3><a href="online-seller-tracker.html">Online Seller Bookkeeping & Inventory Tracker</a></h3>
-        <p>Real profit on every order, after platform fees, shipping and product cost. Stock alerts included.</p>
-        <p class="price" data-usd="$15" data-php="₱499">$15</p>
-        <a class="btn btn-block" href="online-seller-tracker.html">See what's inside</a>
+  </section>
+
+  <section id="store" class="store" aria-labelledby="store-title">
+    <div class="wrap">
+      <div class="store-head">
+        <div>
+          <h2 id="store-title">Shop the kits</h2>
+          <p>Pick a category, or search for what you need. Click Quick look to flip through the real pages.</p>
+        </div>
+      </div>
+      <div class="toolbar">
+        <div class="cats" role="group" aria-label="Categories"><button type="button" class="cat" data-cat="all" aria-pressed="true"><span class="dot"></span>All kits <span class="n">7</span></button><button type="button" class="cat" data-cat="money" aria-pressed="false"><span class="dot"></span>Money <span class="n">4</span></button><button type="button" class="cat" data-cat="life" aria-pressed="false"><span class="dot"></span>Work & Life <span class="n">2</span></button><button type="button" class="cat" data-cat="code" aria-pressed="false"><span class="dot"></span>Code <span class="n">1</span></button></div>
+        <div class="tools-right">
+          <label class="search"><span class="sr-only">Search kits</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><input type="search" placeholder="Search kits…" data-store-search></label>
+          <label class="sort"><span class="sr-only">Sort</span><select data-store-sort><option value="featured">Featured</option><option value="low">Price: low to high</option><option value="high">Price: high to low</option></select></label>
+        </div>
+      </div>
+      <div class="grid" data-store>
+      <article class="card" data-cat="money" data-price="49900" data-order="0" data-search="online seller bookkeeping &amp; inventory tracker real profit on every order, after platform fees, shipping and product cost. stock alerts included. money excel google sheets pdf guide orders log that works out platform fees, product cost and profit for every sale fee settings for shopee, lazada, tiktok shop, etsy, your own website and direct sales products and stock with automatic reorder now and out of stock alerts restock and business expense logs monthly dashboard: sales, fees, profit after expenses and a by-platform breakdown pricing calculator that tells you what to charge on each platform to hit your margin 12-month profit and loss with a chart quick-start guide (pdf)">
+        <div class="card-media">
+          <span class="shots">5 previews</span>
+          <img src="assets/previews/seller-1.jpg" alt="Preview of Online Seller Bookkeeping &amp; Inventory Tracker" loading="lazy" width="640" height="480">
+          <button type="button" class="btn btn-light btn-small quick" data-quick="online-seller-tracker">Quick look</button>
+        </div>
+        <div class="card-body">
+          <p class="card-cat">Money</p>
+          <h3><a href="online-seller-tracker.html">Online Seller Bookkeeping &amp; Inventory Tracker</a></h3>
+          <p class="card-desc">Real profit on every order, after platform fees, shipping and product cost. Stock alerts included.</p>
+          <div class="card-foot">
+            <span class="price" data-usd="$15" data-php="₱499">$15</span>
+            <span class="formats">Excel · Google Sheets</span>
+          </div>
+        </div>
       </article>
-      <article class="product product-bundle">
-        <p class="bundle-tag">Best value</p><a class="product-shot" href="money-reset-bundle.html" tabindex="-1" aria-hidden="true"><img src="assets/products/bundle.jpg" alt="" loading="lazy" width="640" height="420"></a>
-        <p class="product-shelf">Money</p>
-        <h3><a href="money-reset-bundle.html">Money Reset Bundle</a></h3>
-        <p>Budget, debt payoff and savings goal trackers that work together. Three kits for less than two.</p>
-        <p class="price" data-usd="$12" data-php="₱399">$12</p>
-        <a class="btn btn-block btn-yellow" href="money-reset-bundle.html">See what's inside</a>
+      <article class="card" data-cat="money" data-price="39900" data-order="1" data-search="money reset bundle budget, debt payoff and savings goal trackers that work together. three kits for less than two. money excel google sheets pdf guide monthly budget tracker with 50/30/20 check and a year view debt payoff tracker comparing snowball and avalanche, with your debt-free date savings goal tracker that works out what to save each month quick-start guide (pdf) future money-shelf trackers added to your download free">
+        <div class="card-media">
+          <span class="badge">Best value</span><span class="shots">5 previews</span>
+          <img src="assets/previews/budget-1.jpg" alt="Preview of Money Reset Bundle" loading="lazy" width="640" height="480">
+          <button type="button" class="btn btn-light btn-small quick" data-quick="money-reset-bundle">Quick look</button>
+        </div>
+        <div class="card-body">
+          <p class="card-cat">Money</p>
+          <h3><a href="money-reset-bundle.html">Money Reset Bundle</a></h3>
+          <p class="card-desc">Budget, debt payoff and savings goal trackers that work together. Three kits for less than two.</p>
+          <div class="card-foot">
+            <span class="price" data-usd="$12" data-php="₱399">$12</span>
+            <span class="formats">Excel · Google Sheets</span>
+          </div>
+        </div>
       </article>
-      <article class="product">
-        <a class="product-shot" href="debt-payoff-tracker.html" tabindex="-1" aria-hidden="true"><img src="assets/products/debt.jpg" alt="" loading="lazy" width="640" height="420"></a>
-        <p class="product-shelf">Money</p>
-        <h3><a href="debt-payoff-tracker.html">Debt Payoff Tracker</a></h3>
-        <p>Your debt-free date, and whether snowball or avalanche gets you there cheaper.</p>
-        <p class="price" data-usd="$7" data-php="₱249">$7</p>
-        <a class="btn btn-block" href="debt-payoff-tracker.html">See what's inside</a>
+      <article class="card" data-cat="money" data-price="24900" data-order="2" data-search="debt payoff tracker your debt-free date, and whether snowball or avalanche gets you there cheaper. money excel google sheets pdf guide up to 10 debts with balance, interest rate and minimum payment snowball vs avalanche, side by side: months, debt-free date and total interest payoff order with the month each debt is cleared balance-over-time chart for both methods payment log with progress bars quick-start guide (pdf)">
+        <div class="card-media">
+          <span class="shots">3 previews</span>
+          <img src="assets/previews/debt-1.jpg" alt="Preview of Debt Payoff Tracker" loading="lazy" width="640" height="480">
+          <button type="button" class="btn btn-light btn-small quick" data-quick="debt-payoff-tracker">Quick look</button>
+        </div>
+        <div class="card-body">
+          <p class="card-cat">Money</p>
+          <h3><a href="debt-payoff-tracker.html">Debt Payoff Tracker</a></h3>
+          <p class="card-desc">Your debt-free date, and whether snowball or avalanche gets you there cheaper.</p>
+          <div class="card-foot">
+            <span class="price" data-usd="$7" data-php="₱249">$7</span>
+            <span class="formats">Excel · Google Sheets</span>
+          </div>
+        </div>
       </article>
-      <article class="product">
-        <a class="product-shot" href="monthly-budget-tracker.html" tabindex="-1" aria-hidden="true"><img src="assets/products/budget.jpg" alt="" loading="lazy" width="640" height="420"></a>
-        <p class="product-shelf">Money</p>
-        <h3><a href="monthly-budget-tracker.html">Monthly Budget Tracker</a></h3>
-        <p>Plan every paycheck and see what's left in each category, all month long.</p>
-        <p class="price" data-usd="$7" data-php="₱249">$7</p>
-        <a class="btn btn-block" href="monthly-budget-tracker.html">See what's inside</a>
+      <article class="card" data-cat="money" data-price="24900" data-order="3" data-search="monthly budget tracker plan every paycheck and see what&#x27;s left in each category, all month long. money excel google sheets pdf guide plan tab for income and up to 24 spending categories transactions log with category drop-downs dashboard for any month: money in, spent, left and kept 50/30/20 check across needs, wants and savings planned vs spent chart and a year view by month quick-start guide (pdf)">
+        <div class="card-media">
+          <span class="shots">4 previews</span>
+          <img src="assets/previews/budget-1.jpg" alt="Preview of Monthly Budget Tracker" loading="lazy" width="640" height="480">
+          <button type="button" class="btn btn-light btn-small quick" data-quick="monthly-budget-tracker">Quick look</button>
+        </div>
+        <div class="card-body">
+          <p class="card-cat">Money</p>
+          <h3><a href="monthly-budget-tracker.html">Monthly Budget Tracker</a></h3>
+          <p class="card-desc">Plan every paycheck and see what&#x27;s left in each category, all month long.</p>
+          <div class="card-foot">
+            <span class="price" data-usd="$7" data-php="₱249">$7</span>
+            <span class="formats">Excel · Google Sheets</span>
+          </div>
+        </div>
       </article>
-      <article class="product">
-        <a class="product-shot" href="wedding-planner-spreadsheet.html" tabindex="-1" aria-hidden="true"><img src="assets/products/wedding.jpg" alt="" loading="lazy" width="640" height="420"></a>
-        <p class="product-shelf">Work & Life</p>
-        <h3><a href="wedding-planner-spreadsheet.html">Wedding Planner Spreadsheet</a></h3>
-        <p>Budget, guest list, vendors, seating and a checklist that counts down from your date.</p>
-        <p class="price" data-usd="$12" data-php="₱399">$12</p>
-        <a class="btn btn-block" href="wedding-planner-spreadsheet.html">See what's inside</a>
+      <article class="card" data-cat="life" data-price="39900" data-order="4" data-search="wedding planner spreadsheet budget, guest list, vendors, seating and a checklist that counts down from your date. work &amp; life excel google sheets pdf guide dashboard: days to go, budget committed, paid, still owed, rsvps and checklist progress budget by category with suggested shares, actual costs, payments and due dates guest list with rsvp, meal choice and table number seating tab that shows how full every table is vendor contacts and contracts 33-task checklist with due dates from your wedding date hour-by-hour wedding day schedule quick-start guide (pdf)">
+        <div class="card-media">
+          <span class="shots">5 previews</span>
+          <img src="assets/previews/wedding-1.jpg" alt="Preview of Wedding Planner Spreadsheet" loading="lazy" width="640" height="480">
+          <button type="button" class="btn btn-light btn-small quick" data-quick="wedding-planner-spreadsheet">Quick look</button>
+        </div>
+        <div class="card-body">
+          <p class="card-cat">Work & Life</p>
+          <h3><a href="wedding-planner-spreadsheet.html">Wedding Planner Spreadsheet</a></h3>
+          <p class="card-desc">Budget, guest list, vendors, seating and a checklist that counts down from your date.</p>
+          <div class="card-foot">
+            <span class="price" data-usd="$12" data-php="₱399">$12</span>
+            <span class="formats">Excel · Google Sheets</span>
+          </div>
+        </div>
       </article>
-      <article class="product">
-        <a class="product-shot" href="ats-resume-template-pack.html" tabindex="-1" aria-hidden="true"><img src="assets/products/resume.jpg" alt="" loading="lazy" width="640" height="420"></a>
-        <p class="product-shelf">Work & Life</p>
-        <h3><a href="ats-resume-template-pack.html">ATS-Friendly Resume Template Pack</a></h3>
-        <p>Three resumes that applicant-tracking systems can read, plus a matching cover letter.</p>
-        <p class="price" data-usd="$9" data-php="₱299">$9</p>
-        <a class="btn btn-block" href="ats-resume-template-pack.html">See what's inside</a>
+      <article class="card" data-cat="life" data-price="29900" data-order="5" data-search="ats-friendly resume template pack three resumes that applicant-tracking systems can read, plus a matching cover letter. work &amp; life word (.docx) google docs pdf guide resume – classic, for finance, admin, education and government roles resume – modern, for marketing, tech and business roles resume – entry level, education and projects first matching cover letter and references page resume writing guide: bullet formula, action verbs and how to match a job post (pdf)">
+        <div class="card-media">
+          <span class="shots">4 previews</span>
+          <img src="assets/previews/resume-1.jpg" alt="Preview of ATS-Friendly Resume Template Pack" loading="lazy" width="640" height="480">
+          <button type="button" class="btn btn-light btn-small quick" data-quick="ats-resume-template-pack">Quick look</button>
+        </div>
+        <div class="card-body">
+          <p class="card-cat">Work & Life</p>
+          <h3><a href="ats-resume-template-pack.html">ATS-Friendly Resume Template Pack</a></h3>
+          <p class="card-desc">Three resumes that applicant-tracking systems can read, plus a matching cover letter.</p>
+          <div class="card-foot">
+            <span class="price" data-usd="$9" data-php="₱299">$9</span>
+            <span class="formats">Word (.docx) · Google Docs</span>
+          </div>
+        </div>
       </article>
-      <article class="product product-wide">
-        <a class="product-shot" href="kitboard-admin-dashboard.html" tabindex="-1" aria-hidden="true"><img src="assets/products/kitboard.jpg" alt="" loading="lazy" width="640" height="420"></a>
-        <p class="product-shelf">Code</p>
-        <h3><a href="kitboard-admin-dashboard.html">Kitboard Admin Dashboard Template</a></h3>
-        <p>8-page HTML admin dashboard with dark mode, charts and sortable tables. No build step.</p>
-        <p class="price" data-usd="$19" data-php="₱699">$19</p>
-        <a class="btn btn-block" href="kitboard-admin-dashboard.html">See what's inside</a>
+      <article class="card" data-cat="code" data-price="69900" data-order="6" data-search="kitboard admin dashboard template 8-page html admin dashboard with dark mode, charts and sortable tables. no build step. code html css javascript 8 pages: overview, analytics, orders, customers, products, invoices, settings and sign-in light and dark mode that remembers each visitor&#x27;s choice line, bar, donut and sparkline charts in plain svg, with hover details tables with search, sort, status filters and pagination printable invoice, settings forms and toast messages responsive down to phones, keyboard friendly rebrand by editing a few colour variables use in unlimited personal and client projects">
+        <div class="card-media">
+          <span class="shots">6 previews</span>
+          <img src="assets/previews/kitboard-1.jpg" alt="Preview of Kitboard Admin Dashboard Template" loading="lazy" width="640" height="480">
+          <button type="button" class="btn btn-light btn-small quick" data-quick="kitboard-admin-dashboard">Quick look</button>
+        </div>
+        <div class="card-body">
+          <p class="card-cat">Code</p>
+          <h3><a href="kitboard-admin-dashboard.html">Kitboard Admin Dashboard Template</a></h3>
+          <p class="card-desc">8-page HTML admin dashboard with dark mode, charts and sortable tables. No build step.</p>
+          <div class="card-foot">
+            <span class="price" data-usd="$19" data-php="₱699">$19</span>
+            <span class="formats">HTML · CSS</span>
+          </div>
+        </div>
       </article>
+        <p class="empty" hidden>No kits match that search yet. Try another word, or pick All kits.</p>
+      </div>
     </div>
   </section>
 
   <section id="how" class="how" aria-labelledby="how-title">
-    <h2 id="how-title">From checkout to using it in three steps</h2>
-    <ol class="steps">
-      <li><h3>Pick a kit</h3><p>Every page shows exactly what's inside, which apps it works with and screenshots of the real file.</p></li>
-      <li><h3>Pay your way</h3><p>GCash, Maya, GrabPay or any Visa or Mastercard, local or international.</p></li>
-      <li><h3>Download and go</h3><p>Your files open right after payment. Make a copy, add your numbers, done.</p></li>
-    </ol>
+    <div class="wrap">
+      <h2 id="how-title">From checkout to using it in about a minute.</h2>
+      <ol class="steps">
+        <li><h3>Preview everything</h3><p>Every kit shows real screenshots of each tab and page, so you know exactly what you're getting.</p></li>
+        <li><h3>Pay your way</h3><p>GCash, Maya, GrabPay, QR Ph or any Visa or Mastercard, local or international.</p></li>
+        <li><h3>Download and go</h3><p>Your files open right after payment. Make a copy, add your details, done.</p></li>
+      </ol>
+    </div>
   </section>
 
   <section class="soon" aria-labelledby="soon-title">
-    <div class="soon-inner">
-      <h2 id="soon-title">Coming to the shelves</h2>
-      <ul class="soon-list">
-        <li><strong>More money trackers</strong> for freelancers, side hustles and shared household bills</li>
-        <li><strong>React and Next.js dashboard templates</strong> with live demos</li>
-        <li><strong>Image library membership</strong> with unlimited downloads for your projects</li>
-      </ul>
-      <p>Follow along to hear when they drop.</p>
-      <div class="hero-actions">
-        <a class="btn btn-yellow" href="https://www.facebook.com/" rel="noopener">Follow on Facebook</a>
-        <a class="btn btn-ghost-light" href="https://www.tiktok.com/" rel="noopener">Follow on TikTok</a>
+    <div class="wrap">
+      <div class="soon-box">
+        <div>
+          <h2 id="soon-title">New kits every two weeks.</h2>
+          <p>We watch what people are searching for and build the kits they actually need. Follow along to hear when they drop.</p>
+          <div class="hero-actions"><a class="btn btn-light" href="https://www.facebook.com/" rel="noopener">Follow on Facebook</a><a class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.3)" href="https://www.tiktok.com/" rel="noopener">Follow on TikTok</a></div>
+        </div>
+        <ul class="soon-list">
+          <li><strong>More money trackers</strong>For freelancers, side hustles and shared household bills.</li>
+          <li><strong>React and Next.js dashboards</strong>With live demos you can click through first.</li>
+          <li><strong>Image library membership</strong>Unlimited downloads for your projects.</li>
+        </ul>
       </div>
     </div>
   </section>
 
   <section id="faq" class="faq" aria-labelledby="faq-title">
-    <h2 id="faq-title">Questions before you buy</h2>
-    <details>
-      <summary>How do I get my files?</summary>
-      <p>Right after payment you're taken to your download page. Save the link: you can come back to it anytime.</p>
-    </details>
-    <details>
-      <summary>Which apps do I need?</summary>
-      <p>Spreadsheets work in Google Sheets (free) and Microsoft Excel 2016 or newer. Resume templates open in Word or Google Docs. The dashboard template is plain HTML that runs in any browser. Each product page lists the exact formats.</p>
-    </details>
-    <details>
-      <summary>What payment methods can I use?</summary>
-      <p>GCash, Maya, GrabPay, and Visa or Mastercard credit and debit cards, including cards issued outside the Philippines.</p>
-    </details>
-    <details>
-      <summary>Why does my statement say Dafreta Networks?</summary>
-      <p>ProfetaKit is run by Dafreta Networks, so that's the name your bank or e-wallet shows for the charge.</p>
-    </details>
-    <details>
-      <summary>Can I get a refund?</summary>
-      <p>Because files are delivered instantly, sales are final. If a file doesn't open or something is broken, message us and we'll fix it or refund you.</p>
-    </details>
+    <div class="wrap">
+      <h2 id="faq-title">Questions before you buy</h2>
+      <div>
+        <details><summary>How do I get my files?</summary><p>Right after payment you're taken to your download page. Save the link: it keeps working for a year.</p></details>
+        <details><summary>Which apps do I need?</summary><p>Spreadsheets work in Google Sheets (free) and Microsoft Excel 2016 or newer. Resume templates open in Word or Google Docs. The dashboard template is plain HTML that runs in any browser.</p></details>
+        <details><summary>What payment methods can I use?</summary><p>GCash, Maya, GrabPay, QR Ph, and Visa or Mastercard credit and debit cards, including cards issued outside the Philippines.</p></details>
+        <details><summary>Why does my statement say Dafreta Networks?</summary><p>ProfetaKit is run by Dafreta Networks, so that's the name your bank or e-wallet shows for the charge.</p></details>
+        <details><summary>Can I get a refund?</summary><p>Because files are delivered instantly, sales are final. If a file doesn't open or something is broken, message us and we'll fix it or refund you.</p></details>
+      </div>
+    </div>
   </section>
 </main>
 
-<footer class="footer">
-  <div class="footer-brand">
-    <strong>ProfetaKit</strong>
-    <p>Ready-made digital solutions. Download, use, done.</p>
+<dialog class="ql" id="quicklook" aria-label="Quick look">
+  <button class="ql-close" type="button" aria-label="Close">×</button>
+  <div class="ql-grid"><div class="ql-gallery"></div><div class="ql-info"></div></div>
+</dialog>
+<script type="application/json" id="catalog-data">{"online-seller-tracker": {"slug": "online-seller-tracker", "name": "Online Seller Bookkeeping & Inventory Tracker", "sub": "See your real profit on every order, on every platform. Platform fees, shipping and product cost come off automatically, and stock updates itself as you sell.", "cat": "money", "catLabel": "Money", "usd": "$15", "php": "\u20b1499", "formats": ["Excel", "Google Sheets", "PDF guide"], "inside": ["Orders log that works out platform fees, product cost and profit for every sale", "Fee settings for Shopee, Lazada, TikTok Shop, Etsy, your own website and direct sales", "Products and stock with automatic Reorder now and Out of stock alerts", "Restock and business expense logs", "Monthly dashboard: sales, fees, profit after expenses and a by-platform breakdown", "Pricing calculator that tells you what to charge on each platform to hit your margin", "12-month profit and loss with a chart", "Quick-start guide (PDF)"], "previews": [{"src": "assets/previews/seller-1.jpg", "cap": "Dashboard: sales, fees, profit after expenses and by-platform breakdown"}, {"src": "assets/previews/seller-2.jpg", "cap": "Orders: fees, product cost and profit work themselves out"}, {"src": "assets/previews/seller-3.jpg", "cap": "Products: stock levels and reorder alerts"}, {"src": "assets/previews/seller-4.jpg", "cap": "Pricing calculator: the price to charge on each platform"}, {"src": "assets/previews/seller-5.jpg", "cap": "Platforms: set your own fee rates"}]}, "money-reset-bundle": {"slug": "money-reset-bundle", "name": "Money Reset Bundle", "sub": "Everything you need to get your money in order: a budget that shows what's left, a debt plan with your debt-free date, and savings goals that tell you exactly what to put aside.", "cat": "money", "catLabel": "Money", "usd": "$12", "php": "\u20b1399", "formats": ["Excel", "Google Sheets", "PDF guide"], "inside": ["Monthly Budget Tracker with 50/30/20 check and a year view", "Debt Payoff Tracker comparing snowball and avalanche, with your debt-free date", "Savings Goal Tracker that works out what to save each month", "Quick-start guide (PDF)", "Future money-shelf trackers added to your download free"], "previews": [{"src": "assets/previews/budget-1.jpg", "cap": "Budget dashboard: what's left in every category"}, {"src": "assets/previews/debt-1.jpg", "cap": "Debt dashboard: snowball vs avalanche and your debt-free date"}, {"src": "assets/previews/savings-1.jpg", "cap": "Savings goals: what to save each month"}, {"src": "assets/previews/budget-4.jpg", "cap": "Budget year view"}, {"src": "assets/previews/debt-2.jpg", "cap": "Your debts list with progress bars"}]}, "debt-payoff-tracker": {"slug": "debt-payoff-tracker", "name": "Debt Payoff Tracker", "sub": "List your debts once and see the exact month you'll be debt-free. The tracker runs both the snowball and avalanche methods month by month and shows which saves you more.", "cat": "money", "catLabel": "Money", "usd": "$7", "php": "\u20b1249", "formats": ["Excel", "Google Sheets", "PDF guide"], "inside": ["Up to 10 debts with balance, interest rate and minimum payment", "Snowball vs avalanche, side by side: months, debt-free date and total interest", "Payoff order with the month each debt is cleared", "Balance-over-time chart for both methods", "Payment log with progress bars", "Quick-start guide (PDF)"], "previews": [{"src": "assets/previews/debt-1.jpg", "cap": "Dashboard: debt-free date, interest and payoff order"}, {"src": "assets/previews/debt-2.jpg", "cap": "My Debts: balances, rates and progress"}, {"src": "assets/previews/debt-3.jpg", "cap": "Payment log"}]}, "monthly-budget-tracker": {"slug": "monthly-budget-tracker", "name": "Monthly Budget Tracker", "sub": "Give every peso or dollar a job, then see what's left in each category as you spend. The dashboard tells you if you're on track for this point in the month.", "cat": "money", "catLabel": "Money", "usd": "$7", "php": "\u20b1249", "formats": ["Excel", "Google Sheets", "PDF guide"], "inside": ["Plan tab for income and up to 24 spending categories", "Transactions log with category drop-downs", "Dashboard for any month: money in, spent, left and kept", "50/30/20 check across needs, wants and savings", "Planned vs spent chart and a year view by month", "Quick-start guide (PDF)"], "previews": [{"src": "assets/previews/budget-1.jpg", "cap": "Dashboard: money in, spent, left and the 50/30/20 check"}, {"src": "assets/previews/budget-2.jpg", "cap": "Plan: income and category budgets"}, {"src": "assets/previews/budget-3.jpg", "cap": "Transactions log with drop-downs"}, {"src": "assets/previews/budget-4.jpg", "cap": "Year view by month"}]}, "wedding-planner-spreadsheet": {"slug": "wedding-planner-spreadsheet", "name": "Wedding Planner Spreadsheet", "sub": "Plan the whole wedding in one file. Your budget, guests, vendors and every to-do work together, and the checklist dates count back from your wedding day.", "cat": "life", "catLabel": "Work & Life", "usd": "$12", "php": "\u20b1399", "formats": ["Excel", "Google Sheets", "PDF guide"], "inside": ["Dashboard: days to go, budget committed, paid, still owed, RSVPs and checklist progress", "Budget by category with suggested shares, actual costs, payments and due dates", "Guest list with RSVP, meal choice and table number", "Seating tab that shows how full every table is", "Vendor contacts and contracts", "33-task checklist with due dates from your wedding date", "Hour-by-hour wedding day schedule", "Quick-start guide (PDF)"], "previews": [{"src": "assets/previews/wedding-1.jpg", "cap": "Dashboard: days to go, budget, RSVPs and what's next"}, {"src": "assets/previews/wedding-2.jpg", "cap": "Budget with payments and due dates"}, {"src": "assets/previews/wedding-3.jpg", "cap": "Guest list with RSVP, meals and tables"}, {"src": "assets/previews/wedding-4.jpg", "cap": "Checklist that counts back from your date"}, {"src": "assets/previews/wedding-5.jpg", "cap": "Wedding day schedule"}]}, "ats-resume-template-pack": {"slug": "ats-resume-template-pack", "name": "ATS-Friendly Resume Template Pack", "sub": "Three clean, one-column resumes built so applicant-tracking software reads every line, with a cover letter, references page and a guide to writing bullets that get interviews.", "cat": "life", "catLabel": "Work & Life", "usd": "$9", "php": "\u20b1299", "formats": ["Word (.docx)", "Google Docs", "PDF guide"], "inside": ["Resume \u2013 Classic, for finance, admin, education and government roles", "Resume \u2013 Modern, for marketing, tech and business roles", "Resume \u2013 Entry Level, education and projects first", "Matching cover letter and references page", "Resume writing guide: bullet formula, action verbs and how to match a job post (PDF)"], "previews": [{"src": "assets/previews/resume-1.jpg", "cap": "Resume \u2013 Classic"}, {"src": "assets/previews/resume-2.jpg", "cap": "Resume \u2013 Modern"}, {"src": "assets/previews/resume-3.jpg", "cap": "Resume \u2013 Entry Level"}, {"src": "assets/previews/resume-4.jpg", "cap": "Matching cover letter"}]}, "kitboard-admin-dashboard": {"slug": "kitboard-admin-dashboard", "name": "Kitboard Admin Dashboard Template", "sub": "A clean admin dashboard you can open and ship today. Plain HTML, CSS and JavaScript with no frameworks or build tools, so it drops into any backend.", "cat": "code", "catLabel": "Code", "usd": "$19", "php": "\u20b1699", "formats": ["HTML", "CSS", "JavaScript"], "inside": ["8 pages: overview, analytics, orders, customers, products, invoices, settings and sign-in", "Light and dark mode that remembers each visitor's choice", "Line, bar, donut and sparkline charts in plain SVG, with hover details", "Tables with search, sort, status filters and pagination", "Printable invoice, settings forms and toast messages", "Responsive down to phones, keyboard friendly", "Rebrand by editing a few colour variables", "Use in unlimited personal and client projects"], "previews": [{"src": "assets/previews/kitboard-1.jpg", "cap": "Overview, light mode"}, {"src": "assets/previews/kitboard-2.jpg", "cap": "Overview, dark mode"}, {"src": "assets/previews/kitboard-3.jpg", "cap": "Orders table with search, filter and sort"}, {"src": "assets/previews/kitboard-4.jpg", "cap": "Invoices and printable invoice"}, {"src": "assets/previews/kitboard-5.jpg", "cap": "Analytics, dark mode"}, {"src": "assets/previews/kitboard-6.jpg", "cap": "Works on phones"}]}}</script>
+<footer class="foot">
+  <div class="wrap">
+    <div><strong>ProfetaKit</strong>Ready-made digital solutions. Download, use, done.</div>
+    <p class="legal">ProfetaKit is a Dafreta Networks company. Charges appear as Dafreta Networks.<br>© <span id="year">2026</span> ProfetaKit. All rights reserved.</p>
   </div>
-  <p class="footer-legal">ProfetaKit is a Dafreta Networks company. Charges appear as Dafreta Networks.<br>© <span id="year">2026</span> ProfetaKit. All rights reserved.</p>
 </footer>
-
 <script src="assets/main.js"></script>
+<script>(function(){var onStore=!!document.querySelector(".cat");document.querySelectorAll("[data-jump]").forEach(function(a){var c=a.getAttribute("data-jump");if(!onStore){a.href="./#store?cat="+c;return;}a.addEventListener("click",function(){var b=document.querySelector('.cat[data-cat="'+c+'"]');if(b)b.click();});});})();</script>
 </body>
 </html>

@@ -4,27 +4,51 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Your downloads – ProfetaKit</title>
+<meta name="description" content="Your ProfetaKit downloads.">
+<link rel="canonical" href="https://kunlun-17.github.io/ProfetaKit/thanks.html">
 <meta name="robots" content="noindex">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Your downloads – ProfetaKit">
+<meta property="og:description" content="Your ProfetaKit downloads.">
+<meta property="og:url" content="https://kunlun-17.github.io/ProfetaKit/thanks.html">
+
+<meta name="theme-color" content="#F5F6F8">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/styles.css">
+
 </head>
 <body>
-<header class="nav">
-  <a class="brand" href="./" aria-label="ProfetaKit home">
-    <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true"><rect x="4" y="12" width="32" height="24" rx="5" fill="#15172E"/><rect x="4" y="12" width="32" height="8" rx="4" fill="#FFC93C"/><path d="M14 12V8a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v4" fill="none" stroke="#15172E" stroke-width="3"/><rect x="17" y="17" width="6" height="6" rx="1.5" fill="#15172E"/></svg>
-    <span>ProfetaKit</span>
-  </a>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="./" aria-label="ProfetaKit home"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="3" y="11" width="34" height="25" rx="6" fill="#16181F"/><rect x="3" y="11" width="34" height="9" rx="4.5" fill="#2D4BFF"/><path d="M14 11V8a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v3" fill="none" stroke="#16181F" stroke-width="3"/><rect x="17" y="17" width="6" height="6" rx="1.5" fill="#FFD54A"/></svg><span>ProfetaKit</span></a>
+    <nav aria-label="Main"><ul class="nav">
+      <li><a href="./#store">Shop</a></li>
+      <li><a href="./#store" data-jump="money">Money</a></li>
+      <li><a href="./#store" data-jump="life">Work &amp; Life</a></li>
+      <li><a href="./#store" data-jump="code">Code</a></li>
+      <li><a href="./#faq">FAQ</a></li>
+    </ul></nav>
+    <a class="btn btn-small" href="./#store">Browse kits</a>
+  </div>
 </header>
 <main id="main" class="thanks">
   <h1 id="t-title">Checking your payment…</h1>
   <p class="lede" id="t-msg">This usually takes a few seconds.</p>
   <ul class="dl-list" id="t-files"></ul>
-  <p class="pp-small" id="t-note" hidden>Bookmark this page. Your download link keeps working for a year.</p>
+  <p class="buy-note" id="t-note" hidden>Bookmark this page. Your download link keeps working for a year.</p>
 </main>
+<footer class="foot">
+  <div class="wrap">
+    <div><strong>ProfetaKit</strong>Ready-made digital solutions. Download, use, done.</div>
+    <p class="legal">ProfetaKit is a Dafreta Networks company. Charges appear as Dafreta Networks.<br>© <span id="year">2026</span> ProfetaKit. All rights reserved.</p>
+  </div>
+</footer>
 <script src="assets/main.js"></script>
+<script>(function(){var onStore=!!document.querySelector(".cat");document.querySelectorAll("[data-jump]").forEach(function(a){var c=a.getAttribute("data-jump");if(!onStore){a.href="./#store?cat="+c;return;}a.addEventListener("click",function(){var b=document.querySelector('.cat[data-cat="'+c+'"]');if(b)b.click();});});})();</script>
 <script>
 (function () {
   var id = new URLSearchParams(location.search).get("order");

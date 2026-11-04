@@ -37,25 +37,143 @@
   // Set this to your Worker's address after you deploy it, e.g. "https://profetakit.yourname.workers.dev"
   var STORE_API = "https://profetakit-store.kunlun-dafreta-1.workers.dev";
   window.PK_STORE_API = STORE_API;
-  document.querySelectorAll("[data-buy]").forEach(function (btn) {
+  document.addEventListener("click", function (ev) {
+    var btn = ev.target.closest("[data-buy]");
+    if (!btn) return;
     var err = btn.parentElement.querySelector(".buy-error");
-    btn.addEventListener("click", function () {
-      var label = btn.textContent;
-      btn.disabled = true; btn.textContent = "Opening checkout…";
-      if (err) err.hidden = true;
-      fetch(STORE_API + "/checkout", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ product: btn.getAttribute("data-buy") })
-      }).then(function (r) { return r.json(); }).then(function (j) {
-        if (j.url) { window.location.href = j.url; return; }
-        if (j.detail) console.error("ProfetaKit checkout:", j.detail);
-        throw new Error((j.error || "Checkout could not start.") + (j.detail ? " (" + j.detail + ")" : ""));
-      }).catch(function (e) {
-        btn.disabled = false; btn.textContent = label;
-        if (err) { err.textContent = (e && e.message ? e.message : "Checkout could not start.") + " Try again in a moment."; err.hidden = false; }
-      });
+    var label = btn.textContent;
+    btn.disabled = true; btn.textContent = "Opening checkout…";
+    if (err) err.hidden = true;
+    fetch(STORE_API + "/checkout", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ product: btn.getAttribute("data-buy") })
+    }).then(function (r) { return r.json(); }).then(function (j) {
+      if (j.url) { window.location.href = j.url; return; }
+      if (j.detail) console.error("ProfetaKit checkout:", j.detail);
+      throw new Error((j.error || "Checkout could not start.") + (j.detail ? " (" + j.detail + ")" : ""));
+    }).catch(function (e) {
+      btn.disabled = false; btn.textContent = label;
+      if (err) { err.textContent = (e && e.message ? e.message : "Checkout could not start.") + " Try again in a moment."; err.hidden = false; }
     });
   });
+
+  /* ---------- No right-click or image dragging ---------- */
+  document.addEventListener("contextmenu", function (e) { e.preventDefault(); });
+  document.addEventListener("dragstart", function (e) { if (e.target.tagName === "IMG") e.preventDefault(); });
+
+  /* ---------- Header shadow on scroll ---------- */
+  var top = document.querySelector(".top");
+  if (top) {
+    var onScroll = function () { top.classList.toggle("scrolled", window.scrollY > 8); };
+    window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
+  }
+
+  /* ---------- Gallery + lightbox ---------- */
+  var lb = document.createElement("div");
+  lb.className = "lightbox"; lb.setAttribute("role", "dialog"); lb.setAttribute("aria-modal", "true"); lb.setAttribute("aria-label", "Preview");
+  lb.innerHTML = '<button class="ql-close" type="button" aria-label="Close preview">×</button><button class="gallery-nav prev" type="button" aria-label="Previous image">‹</button><img alt=""><button class="gallery-nav next" type="button" aria-label="Next image">›</button><p class="lightbox-cap"></p>';
+  document.body.appendChild(lb);
+  var lbState = { items: [], i: 0 };
+  function lbShow() {
+    var it = lbState.items[lbState.i];
+    lb.querySelector("img").src = it.src; lb.querySelector("img").alt = it.cap;
+    lb.querySelector(".lightbox-cap").textContent = (lbState.i + 1) + " / " + lbState.items.length + " · " + it.cap;
+  }
+  function lbOpen(items, i) { lbState = { items: items, i: i }; lbShow(); lb.classList.add("open"); lb.querySelector(".ql-close").focus(); }
+  function lbClose() { lb.classList.remove("open"); }
+  lb.addEventListener("click", function (e) {
+    if (e.target.closest(".prev")) { lbState.i = (lbState.i - 1 + lbState.items.length) % lbState.items.length; lbShow(); }
+    else if (e.target.closest(".next")) { lbState.i = (lbState.i + 1) % lbState.items.length; lbShow(); }
+    else if (e.target.closest(".ql-close") || e.target === lb) lbClose();
+  });
+  document.addEventListener("keydown", function (e) {
+    if (!lb.classList.contains("open")) return;
+    if (e.key === "Escape") lbClose();
+    if (e.key === "ArrowLeft") lb.querySelector(".prev").click();
+    if (e.key === "ArrowRight") lb.querySelector(".next").click();
+  });
+
+  function mountGallery(root, items) {
+    if (!root || !items || !items.length) return;
+    var i = 0;
+    root.innerHTML = '<div class="gallery-main"><img alt=""><button class="gallery-nav prev" type="button" aria-label="Previous image">‹</button><button class="gallery-nav next" type="button" aria-label="Next image">›</button></div><p class="gallery-cap"></p><div class="thumbs" role="list"></div>';
+    var main = root.querySelector(".gallery-main img"), cap = root.querySelector(".gallery-cap"), th = root.querySelector(".thumbs");
+    th.innerHTML = items.map(function (it, k) { return '<button type="button" role="listitem" data-k="' + k + '" aria-label="Show ' + it.cap.replace(/"/g, "") + '"><img src="' + it.src + '" alt="" loading="lazy"></button>'; }).join("");
+    function show(k) {
+      i = (k + items.length) % items.length;
+      main.src = items[i].src; main.alt = items[i].cap; cap.textContent = items[i].cap + "  ·  " + (i + 1) + " of " + items.length;
+      th.querySelectorAll("button").forEach(function (b, n) { b.setAttribute("aria-current", n === i ? "true" : "false"); });
+    }
+    root.addEventListener("click", function (e) {
+      var t = e.target.closest("[data-k]");
+      if (t) return show(Number(t.getAttribute("data-k")));
+      if (e.target.closest(".prev")) return show(i - 1);
+      if (e.target.closest(".next")) return show(i + 1);
+      if (e.target.closest(".gallery-main")) lbOpen(items, i);
+    });
+    if (items.length < 2) root.querySelectorAll(".gallery-nav").forEach(function (b) { b.hidden = true; });
+    show(0);
+  }
+  window.PK_mountGallery = mountGallery;
+  var ppg = document.querySelector("[data-gallery]");
+  if (ppg) mountGallery(ppg, JSON.parse(ppg.getAttribute("data-gallery")));
+
+  /* ---------- Store: categories, search, sort ---------- */
+  var grid = document.querySelector("[data-store]");
+  if (grid) {
+    var cards = Array.prototype.slice.call(grid.querySelectorAll(".card"));
+    var state = { cat: "all", q: "", sort: "featured" };
+    var empty = grid.querySelector(".empty");
+    var priceOf = function (c) { return Number(c.getAttribute("data-price")); };
+    function apply() {
+      var shown = 0;
+      var sorted = cards.slice().sort(function (a, b) {
+        if (state.sort === "low") return priceOf(a) - priceOf(b);
+        if (state.sort === "high") return priceOf(b) - priceOf(a);
+        return Number(a.getAttribute("data-order")) - Number(b.getAttribute("data-order"));
+      });
+      sorted.forEach(function (c) {
+        var ok = (state.cat === "all" || c.getAttribute("data-cat") === state.cat) &&
+                 (!state.q || c.getAttribute("data-search").indexOf(state.q) > -1);
+        c.hidden = !ok; if (ok) shown++;
+        grid.insertBefore(c, empty);
+      });
+      empty.hidden = shown > 0;
+    }
+    document.querySelectorAll(".cat").forEach(function (b) {
+      b.addEventListener("click", function () {
+        state.cat = b.getAttribute("data-cat");
+        document.querySelectorAll(".cat").forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+        apply();
+      });
+    });
+    var s = document.querySelector("[data-store-search]");
+    if (s) s.addEventListener("input", function () { state.q = s.value.trim().toLowerCase(); apply(); });
+    var so = document.querySelector("[data-store-sort]");
+    if (so) so.addEventListener("change", function () { state.sort = so.value; apply(); });
+    var hashCat = (location.hash.match(/cat=(\w+)/) || [])[1];
+    if (hashCat) { var hb = document.querySelector('.cat[data-cat="' + hashCat + '"]'); if (hb) hb.click(); }
+
+    /* Quick look */
+    var data = JSON.parse(document.getElementById("catalog-data").textContent);
+    var dlg = document.getElementById("quicklook");
+    grid.addEventListener("click", function (e) {
+      var q = e.target.closest("[data-quick]"); if (!q) return;
+      e.preventDefault();
+      var p = data[q.getAttribute("data-quick")];
+      var cur = document.documentElement.getAttribute("data-currency") || "usd";
+      dlg.querySelector(".ql-info").innerHTML =
+        '<p class="pp-cat" data-cat="' + p.cat + '">' + p.catLabel + '</p><h3>' + p.name + '</h3><p class="lede" style="color:var(--soft)">' + p.sub + '</p>' +
+        '<div class="chips">' + p.formats.map(function (f) { return "<span>" + f + "</span>"; }).join("") + '</div>' +
+        '<ul>' + p.inside.slice(0, 5).map(function (x) { return "<li>" + x + "</li>"; }).join("") + '</ul>' +
+        '<p class="price" data-usd="' + p.usd + '" data-php="' + p.php + '">' + (cur === "php" ? p.php : p.usd) + '</p>' +
+        '<div style="display:grid;gap:.6rem"><button type="button" class="btn btn-cobalt btn-block" data-buy="' + p.slug + '">Buy now</button><p class="buy-error" role="alert" hidden></p>' +
+        '<a class="btn btn-ghost btn-block" href="' + p.slug + '.html">See full details</a></div>';
+      mountGallery(dlg.querySelector(".ql-gallery"), p.previews);
+      if (dlg.showModal) dlg.showModal(); else location.href = p.slug + ".html";
+    });
+    dlg.addEventListener("click", function (e) { if (e.target === dlg || e.target.closest(".ql-close")) dlg.close(); });
+  }
 
   /* ---------- Particle kit stage ---------- */
   var canvas = document.getElementById("kit-canvas");
@@ -64,11 +182,11 @@
   var tabs = document.querySelectorAll(".stage-tabs [data-shape]");
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  var INK = "#15172E", BLUE = "#3D5AFE", MINT = "#22C993", YELLOW = "#E8A900";
+  var INK = "#F2F4FF", BLUE = "#6F86FF", MINT = "#2BD49A", YELLOW = "#FFD54A", CORAL = "#FF7A57", VIOLET = "#A28CFF";
   var palettes = [
     [INK, INK, MINT, MINT, BLUE],
-    [INK, INK, BLUE, BLUE, MINT],
-    [INK, INK, BLUE, YELLOW, YELLOW]
+    [INK, INK, BLUE, BLUE, VIOLET],
+    [INK, VIOLET, VIOLET, YELLOW, CORAL]
   ];
 
   var S = 400; // drawing space for shapes
