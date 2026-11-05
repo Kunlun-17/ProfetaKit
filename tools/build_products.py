@@ -61,7 +61,7 @@ def head(title, desc, canonical, og_image=None, ld=None, noindex=False):
 
 FOOT = """<footer class="foot">
   <div class="wrap">
-    <div><strong>ProfetaKit</strong>Ready-made digital solutions. Download, use, done.</div>
+    <div><strong>ProfetaKit</strong>Ready-made digital solutions. Download, use, done.<br><a href="guides.html">Guides</a> · <a href="free-kits.html">Free kits</a></div>
     <p class="legal">ProfetaKit is a Dafreta Networks company. Charges appear as Dafreta Networks.<br>© <span id="year">2026</span> ProfetaKit. All rights reserved.</p>
   </div>
 </footer>
@@ -354,8 +354,43 @@ freepage += f"""<main id="main">
 """ + FOOT
 (root / "free-kits.html").write_text(freepage)
 
+
+# ---------------- guides ----------------
+from guides import GUIDES
+gl = ""
+for g in GUIDES:
+    fslug, fname = g["free"]; q = by_slug[g["paid"]]
+    ld = {"@context": "https://schema.org", "@type": "Article", "headline": g["title"], "description": g["desc"],
+          "author": {"@type": "Organization", "name": "ProfetaKit"}, "datePublished": "2026-11-05", "image": SITE + f"assets/covers/{q['slug']}.jpg"}
+    page = head(g["title"] + " | ProfetaKit", g["desc"], SITE + f"guide-{g['slug']}.html", f"assets/covers/{q['slug']}.jpg", ld)
+    page += f"""<main id="main" class="article">
+  <div class="wrap">
+    <p class="crumbs"><a href="./">Home</a> / <a href="guides.html">Guides</a></p>
+    <article>
+      <h1>{esc(g["h1"])}</h1>
+      <p class="lede">{esc(g["lede"])}</p>
+      {g["body"]}
+      <aside class="article-cta">
+        <a class="article-cta-img" href="{q['slug']}.html"><img src="assets/covers/{q['slug']}.jpg" alt="{esc(q['name'])}" loading="lazy" width="1280" height="720"></a>
+        <div>
+          <p class="card-cat">Try it free first</p>
+          <p><a href="free/{fslug}.zip" download><b>{esc(fname)}</b></a> · no sign-up</p>
+          <p>Want the full version? <a href="{q['slug']}.html"><b>{esc(q['name'])}</b></a> ({q['usd'] if q.get('gumroad') else 'from ' + q['php']})</p>
+          <a class="btn btn-cobalt" href="{q['slug']}.html">See the {esc(q['name'])}</a>
+        </div>
+      </aside>
+    </article>
+  </div>
+</main>
+""" + FOOT
+    (root / f"guide-{g['slug']}.html").write_text(page)
+    gl += f'<li><a href="guide-{g["slug"]}.html"><b>{esc(g["h1"])}</b></a><br><span>{esc(g["lede"])}</span></li>'
+gpage = head("Guides for Online Sellers, Freelancers & Developers | ProfetaKit", "Practical how-to guides: profit per order, invoicing, landing pages and more.", SITE + "guides.html")
+gpage += f"""<main id="main" class="article"><div class="wrap"><p class="crumbs"><a href="./">Home</a> / Guides</p><article><h1>Guides</h1><p class="lede">Short, practical how-tos. Each one comes with a free template.</p><ul class="guide-list">{gl}</ul></article></div></main>""" + FOOT
+(root / "guides.html").write_text(gpage)
+
 # ---------------- sitemap ----------------
-urls = [SITE, SITE + "free-kits.html"] + [f"{SITE}{p['slug']}.html" for p in PRODUCTS] + [f"{SITE}demo/kitboard/index.html"]
+urls = [SITE, SITE + "free-kits.html", SITE + "guides.html"] + [SITE + f"guide-{g['slug']}.html" for g in GUIDES] + [f"{SITE}{p['slug']}.html" for p in PRODUCTS] + [f"{SITE}demo/kitboard/index.html"]
 (root / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
     "".join(f"  <url><loc>{u}</loc></url>\n" for u in urls) + "</urlset>\n")
 

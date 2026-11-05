@@ -384,3 +384,21 @@ dialog.ql::backdrop { background: rgba(22, 24, 31, .55); backdrop-filter: blur(4
   .free-actions .btn { font-size: .78rem; padding: .5rem .4rem; min-height: 0; line-height: 1.2; border-radius: 10px; }
   .free-actions .btn-ghost { display: none; }
 }
+
+/* Guides */
+.article article { max-width: 760px; padding: .5rem 0 4rem; }
+.article h1 { font-size: clamp(2rem, 4.5vw, 2.8rem); line-height: 1.1; margin: .5rem 0 .8rem; letter-spacing: -.02em; }
+.article .lede { color: var(--soft); font-size: 1.15rem; margin: 0 0 1.5rem; }
+.article h2 { font-size: 1.45rem; margin: 2.2rem 0 .7rem; }
+.article p, .article li { font-size: 1.04rem; line-height: 1.7; }
+.article li { margin-bottom: .4rem; }
+.article table { width: 100%; border-collapse: collapse; margin: 1rem 0; background: #fff; border-radius: 12px; overflow: hidden; }
+.article th, .article td { text-align: left; padding: .65rem .9rem; border-bottom: 1px solid var(--line); }
+.article th { background: var(--paper); }
+.article-cta { display: grid; grid-template-columns: 240px 1fr; gap: 1.3rem; align-items: center; margin-top: 2.5rem; padding: 1.2rem; background: #fff; border: 1px solid var(--line); border-radius: 18px; }
+.article-cta img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 12px; display: block; }
+.article-cta p { margin: 0 0 .5rem; }
+.guide-list { list-style: none; padding: 0; display: grid; gap: 1.2rem; }
+.guide-list li { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 1.1rem 1.3rem; }
+.guide-list span { color: var(--soft); }
+@media (max-width: 640px) { .article-cta { grid-template-columns: 1fr; } }
