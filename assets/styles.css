@@ -402,3 +402,13 @@ dialog.ql::backdrop { background: rgba(22, 24, 31, .55); backdrop-filter: blur(4
 .guide-list li { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 1.1rem 1.3rem; }
 .guide-list span { color: var(--soft); }
 @media (max-width: 640px) { .article-cta { grid-template-columns: 1fr; } }
+
+/* Follow / social CTA */
+.follow-cta { border-top: 1px solid var(--line); background: var(--surface); padding: 2.2rem 0; }
+.follow-cta .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.2rem; }
+.follow-cta h2 { margin: 0 0 .25rem; font: 800 1.35rem/1.2 var(--display); letter-spacing: -.02em; }
+.follow-cta p { margin: 0; color: var(--ink-2); }
+.social { display: flex; flex-wrap: wrap; gap: .6rem; }
+.social a { display: inline-flex; align-items: center; gap: .45rem; padding: .6rem 1rem; border: 1.5px solid var(--line); border-radius: 999px; color: var(--ink); text-decoration: none; font-weight: 600; font-size: .93rem; background: var(--paper); transition: border-color .15s ease, transform .15s ease; }
+.social a:hover { border-color: var(--ink); transform: translateY(-1px); }
+.social svg { width: 18px; height: 18px; }

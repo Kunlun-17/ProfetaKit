@@ -59,9 +59,25 @@ def head(title, desc, canonical, og_image=None, ld=None, noindex=False):
 """
 
 
-FOOT = """<footer class="foot">
+SOCIAL = [
+    ("TikTok", "https://www.tiktok.com/@profetakit", '<path d="M14 3v11.5a3.5 3.5 0 1 1-3-3.46"/><path d="M14 3c.4 2.6 2.2 4.4 5 4.6"/>'),
+    ("Pinterest", "https://www.pinterest.com/profetakit/", '<circle cx="12" cy="12" r="9"/><path d="M11 8.5c3-1 5 .8 4.6 3.3-.4 2.4-2.8 3.4-4 2.2M11.5 10l-2.5 11"/>'),
+    ("Facebook", "https://www.facebook.com/profile.php?id=61572500956609", '<path d="M14 21v-8h3l.5-3.5H14V7.5c0-1 .4-1.7 1.8-1.7H17.6V2.7C17.2 2.6 16 2.5 14.8 2.5 12.2 2.5 10.5 4 10.5 7v2.5h-3V13h3v8"/>'),
+    ("Gumroad", "https://profetakit.gumroad.com", '<circle cx="12" cy="12" r="9"/><path d="M15.5 9.5A3.5 3.5 0 1 0 15 14h-2.5"/>'),
+]
+SOCIAL_LINKS = "".join(
+    f'<a href="{u}" target="_blank" rel="noopener" aria-label="ProfetaKit on {n}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{p}</svg><span>{n}</span></a>'
+    for n, u, p in SOCIAL)
+
+FOOT = """<section class="follow-cta">
   <div class="wrap">
-    <div><strong>ProfetaKit</strong>Ready-made digital solutions. Download, use, done.<br><a href="guides.html">Guides</a> · <a href="free-kits.html">Free kits</a></div>
+    <div><h2>New free kit every two weeks</h2><p>Follow ProfetaKit for free templates, quick spreadsheet tips and seller guides.</p></div>
+    <div class="social">""" + SOCIAL_LINKS + """</div>
+  </div>
+</section>
+<footer class="foot">
+  <div class="wrap">
+    <div><strong>ProfetaKit</strong>Ready-made digital solutions. Download, use, done.<br><a href="guides.html">Guides</a> · <a href="free-kits.html">Free kits</a> · <a href="https://www.tiktok.com/@profetakit" target="_blank" rel="noopener">TikTok</a> · <a href="https://www.pinterest.com/profetakit/" target="_blank" rel="noopener">Pinterest</a> · <a href="https://www.facebook.com/profile.php?id=61572500956609" target="_blank" rel="noopener">Facebook</a></div>
     <p class="legal">ProfetaKit is a Dafreta Networks company. Charges appear as Dafreta Networks.<br>© <span id="year">2026</span> ProfetaKit. All rights reserved.</p>
   </div>
 </footer>
@@ -116,7 +132,7 @@ catalog_json = {p["slug"]: {"slug": p["slug"], "name": p["name"], "sub": p["sub"
 home = head("ProfetaKit – Digital Templates & Starter Kits",
             "Ready-made spreadsheets, resume templates and admin dashboards. Preview every page before you buy, pay with GCash, Maya or card, and download instantly.",
             SITE, PRODUCTS[0]["previews"][0][0] and "assets/previews/" + PRODUCTS[1]["previews"][0][0],
-            {"@context": "https://schema.org", "@type": "Organization", "name": "ProfetaKit", "url": SITE, "parentOrganization": {"@type": "Organization", "name": "Dafreta Networks"}})
+            {"@context": "https://schema.org", "@type": "Organization", "name": "ProfetaKit", "url": SITE, "logo": SITE + "assets/brand/profetakit-profile-picture.png", "sameAs": [u for _, u, _ in SOCIAL], "parentOrganization": {"@type": "Organization", "name": "Dafreta Networks"}})
 home += f'''<main id="main">
   <section class="hero">
     <div class="wrap">
